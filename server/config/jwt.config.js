@@ -1,9 +1,9 @@
-const jwt = require('jsonwebtoken');
+const JsonWebToken = require('jsonwebtoken');
 
-module.exports.authenticate = (req, res, next) => {
-    jwt.verify(req.cookies.userToken, process.env.FIRST_SECRET_KEY, (err, payload) => {
+module.exports.verifyCookie = (request, response, next) => {
+    JsonWebToken.verify(request.cookies.userToken, process.env.Project_key, (err, payload) => {
         if (err) {
-            res.status(401).json({verified: false});
+            response.status(401).json({verified: false});
         } else{
             next();
         }
