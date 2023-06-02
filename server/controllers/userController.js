@@ -10,15 +10,15 @@ module.exports = {
             return response.status(400).json({email: "Email already Exists"});
         }
 
-        const clearedToCreateUser = await User.create(request.body).catch(err=> {response.status(400).json(err);});
+        const userCreation = await User.create(request.body).catch(err=> response.status(400).json(err));
         
-        if (clearedToCreateUser === undefined) {
+        if (userCreation === undefined) {
             return null;
         }
 
         const tokenContents = {
-            userId: clearedToCreateUser._id,
-            userName: clearedToCreateUser.fullName
+            userId: userCreation._id,
+            userName: userCreation.fullName
         }
 
         const userToken = JsonWebToken.sign(tokenContents, process.env.Project_key);
@@ -63,9 +63,8 @@ module.exports = {
 
     updateUser: async (request, response) => {
         const activeUserToken = JsonWebToken.decode(request.cookies.userToken);
-        const userId = activeUserToken.userId;
         
-        const willTheUserUpdate = await User.findOneAndUpdate({_id: userId}, request.body, {new: true, runValidators: true}).catch(err => response.status(400).json(err));
+        const willTheUserUpdate = await User.findOneAndUpdate({_id: activeUserToken.userId}, request.body, {new: true, runValidators: true}).catch(err => response.status(400).json(err));
 
         response
             .status(200)
@@ -83,9 +82,8 @@ module.exports = {
 
     deleteUser: async (request, response) => {
         const activeUserToken = JsonWebToken.decode(request.cookies.userToken);
-        const userId = activeUserToken.userId;
 
-        const userDeletion = await User.deleteOne({_id: userId}).catch(err => response.status(400).json(err));
+        const userDeletion = await User.deleteOne({_id: activeUserToken.userId}).catch(err => response.status(400).json(err));
 
         response
             .clearCookie('userToken')
