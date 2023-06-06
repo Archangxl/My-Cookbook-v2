@@ -1,10 +1,12 @@
+import Navbar from '../Pages/Navbar';
+import Main from '../Pages/Main';
 
-
-const LandingPage = ({children}) => {
+const LandingPage = () => {
 
     return (
         <div>
-            {children}
+            <Navbar />
+            <Main />
         </div>
     );
 

@@ -9,11 +9,12 @@ module.exports = {
 
         /*
         Test run provider
-        const ingredients = [{measurement: '1 cup', item: 'flour'}];
-        const steps = [{description: 'put in bowl'}];
         */
+        const ingredientList = [{measurement: '1 cup', item: 'flour'}];
+        const stepList = [{description: 'put in bowl'}];
+        
 
-        const recipeCreation = await Recipe.create({userId: activeUserToken.userId, name: request.body.name, ingredientList: request.body.ingredients, stepList: request.body.stepList}).catch(error => response.status(400).json(error));
+        const recipeCreation = await Recipe.create({userId: activeUserToken.userId, name: request.body.name, ingredientList: /*request.body.*/ingredientList, stepList: /*request.body.*/stepList}).catch(error => response.status(400).json(error));
 
         if (recipeCreation.name === undefined) {
             return null;

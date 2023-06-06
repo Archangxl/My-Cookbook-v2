@@ -26,7 +26,7 @@ module.exports = {
         response
             .cookie("userToken", userToken, {httpOnly: true})
             .status(200)
-            .json({cookieMessage: "Cookie Created", user: clearedToCreateUser});
+            .json({cookieMessage: "Cookie Created", user: tokenContents});
     },
 
 
@@ -57,7 +57,7 @@ module.exports = {
         response
             .cookie("userToken", userToken, {httpOnly: true})
             .status(200)
-            .json({cookieMessage: "Cookie Created", user: doesTheUserExist});
+            .json({cookieMessage: "Cookie Created", user: tokenContents});
     }, 
 
 
