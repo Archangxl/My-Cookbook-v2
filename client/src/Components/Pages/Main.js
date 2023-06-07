@@ -10,29 +10,34 @@ const Main = () => {
         axios
             .get('http://localhost:8000/api/grabbingAllSharedRecipes')
             .then(recipes => {
-                
+                console.log(recipes)
                 setSharedRecipes(recipes.data);
                 setLoaded(true);
             })
             .catch(err => console.log(err));
     }, []);
 
-
+    const recipeCardStyle = {
+        margin: '10px',
+        padding: '10px',
+        border: '1px solid black'
+    }
 
     return (
         <>
             {loaded === true 
             
             && (
-                <div>
+                <>
                     {sharedRecipes.map((recipe, index) => {
                         return (
-                            <div key={index}>
-                                <p>Recipe</p>
+                            <div key={index} style={recipeCardStyle}>
+                                <p>Created by: {recipe.user}</p>
+                                <p>Recipe name: {recipe.recipe.name}</p>
                             </div>
                         );
                     })}
-                </div>
+                </>
             )}
         </>
     );

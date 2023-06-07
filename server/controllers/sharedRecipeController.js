@@ -28,7 +28,7 @@ module.exports = {
             const user = grabbingAllSharedRecipes[sharedRecipeIndex].userId;
             const userInformation = await User.findById({_id: user});
 
-            formatForFrontEnd.push({recipe: recipePackage, user: userInformation.fullName, sharedRecipeId: grabbingAllSharedRecipes[sharedRecipeIndex]._id});
+            formatForFrontEnd.push({recipe: recipePackage ,user: userInformation.fullName, sharedRecipeId: grabbingAllSharedRecipes[sharedRecipeIndex]._id});
         }
 
         response
