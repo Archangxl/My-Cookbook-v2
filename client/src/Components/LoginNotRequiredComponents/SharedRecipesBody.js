@@ -10,7 +10,6 @@ const Main = () => {
         axios
             .get('http://localhost:8000/api/grabbingAllSharedRecipes')
             .then(recipes => {
-                console.log(recipes)
                 setSharedRecipes(recipes.data);
                 setLoaded(true);
             })
@@ -27,17 +26,18 @@ const Main = () => {
         <>
             {loaded === true 
             
-            && (
-                <>
-                    {sharedRecipes.map((recipe, index) => {
-                        return (
-                            <div key={index} style={recipeCardStyle}>
-                                <p>Created by: {recipe.user}</p>
-                                <p>Recipe name: {recipe.recipe.name}</p>
-                            </div>
-                        );
-                    })}
-                </>
+            && 
+            
+            (<>
+                {sharedRecipes.map((recipe, index) => {
+                    return (
+                        <div key={index} style={recipeCardStyle}>
+                            <p>Created by: {recipe.user}</p>
+                            <p>Recipe name: {recipe.recipe.name}</p>
+                        </div>
+                    );
+                })}
+            </>
             )}
         </>
     );

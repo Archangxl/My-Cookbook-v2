@@ -10,7 +10,7 @@ module.exports = {
             return response.status(400).json({email: "Email already Exists"});
         }
 
-        const userCreation = await User.create(request.body).catch(err=> response.status(400).json(err));
+        const userCreation = await User.create({fullName: request.body.fullName, email: request.body.email, password: request.body.password, confirmPassword: request.body.confirmPassword}).catch(err=> response.status(400).json(err));
         
         if (userCreation === undefined) {
             return null;
