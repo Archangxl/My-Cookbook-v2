@@ -2,29 +2,37 @@ import {useState} from 'react';
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
 
-const LoginForm = () => {
+const RegisterForm = () => {
 
     const navigate = useNavigate();
-
-    const logUserIn = (e) => {
+    const createUser = (e) => {
         e.preventDefault();
-        axios.post('http://localhost:8000/api/loginUser', {email, password}, {withCredentials: true})
+        axios.post('http://localhost:8000/api/createUser', {fullName, email, password, confirmPassword}, {withCredentials: true})
             .then(res => navigate('/cookbook'))
             .catch(err => console.log(err));
     }
 
+    const [fullName, setFullName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+
+    const mainStyle = {
+        display: 'flex',
+        justifyContent: 'center',
+        minWidth: '300px',
+        margin: '10px'
+    }
 
     const formStyle = {
-        padding: '10px',
-        margin: '10px',
-        display: 'grid',
-        gap: '10px',
-        minWidth: '280px',
-        borderRadius: '5px',
-        backgroundColor: '#F1C376',
         color: 'white', 
+        flex: '1',
+        maxWidth: '600px',
+        backgroundColor: '#F1C376',
+        borderRadius: '5px',
+        display: 'grid',
+        padding: '10px',
+        gap: '10px',
     }
 
     const inputStyles = {
@@ -42,15 +50,20 @@ const LoginForm = () => {
     }
 
     return (
-        <main>
-            <form style={formStyle} onSubmit={logUserIn}>
-                <p><b>Login</b></p>
+        <main style={mainStyle}>
+            <form style={formStyle} onSubmit={createUser}>
+                <p><b>Register</b></p>
+                <label>Full Name:</label>
+                <input style={inputStyles} type="text" onChange={(e) => setFullName(e.target.value)} value={fullName}></input>
 
                 <label>Email: </label>
                 <input style={inputStyles} type="text" onChange={(e) => setEmail(e.target.value)} value={email}></input>
                 
                 <label>Password: </label>
                 <input style={inputStyles} type="password" onChange={(e) => setPassword(e.target.value)} value={password}></input>
+                
+                <label>Confirm Password</label>
+                <input style={inputStyles} type="password" onChange={(e) => setConfirmPassword(e.target.value)} value={confirmPassword}></input>
                 
                 <div>
                     <button style={buttonSytle}>Submit</button>
@@ -61,4 +74,4 @@ const LoginForm = () => {
 
 }
 
-export default LoginForm;
+export default RegisterForm;

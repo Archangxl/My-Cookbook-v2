@@ -6,8 +6,9 @@ const LoggedInNavbar = () => {
     const navigate = useNavigate();
 
     const logOut = (e) => {
-        axios.get('http://localhost:8000/api/logout')
+        axios.get('http://localhost:8000/api/logout', {withCredentials: true})
             .then(res => navigate('/'))
+            .catch(err => console.log(err));
     }
 
     

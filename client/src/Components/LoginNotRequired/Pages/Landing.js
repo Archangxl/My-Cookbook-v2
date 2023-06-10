@@ -1,5 +1,5 @@
-import Navbar from './Navbar';
-import Main from './SharedRecipesBody';
+import Navbar from '../Components/Navbar';
+import Main from '../Components/SharedRecipesBody';
 
 const LandingPage = () => {
 

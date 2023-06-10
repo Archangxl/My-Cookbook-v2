@@ -1,8 +1,8 @@
-import LandingPage from "./Components/LoginNotRequiredComponents/Landing";
+import LandingPage from "./Components/LoginNotRequired/Pages/Landing";
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
-import Login from "./Components/LoginNotRequiredComponents/Login";
-import Register from "./Components/LoginNotRequiredComponents/Register";
-import Cookbook from "./Components/LoginRequiredComponents/Cookbook";
+import Login from "./Components/LoginNotRequired/Pages/Login";
+import Register from "./Components/LoginNotRequired/Pages/Register";
+import Cookbook from "./Components/LoginRequired/Pages/Cookbook";
 
 function App() {
 
