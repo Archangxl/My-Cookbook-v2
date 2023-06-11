@@ -52,7 +52,7 @@ const RegisterForm = () => {
     return (
         <main style={mainStyle}>
             <form style={formStyle} onSubmit={createUser}>
-                <p><b>Register</b></p>
+
                 <label>Full Name:</label>
                 <input style={inputStyles} type="text" onChange={(e) => setFullName(e.target.value)} value={fullName}></input>
 

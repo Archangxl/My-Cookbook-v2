@@ -52,7 +52,6 @@ const LoginForm = () => {
         <main style={mainStyle}>
             
                 <form style={formStyle} onSubmit={logUserIn}>
-                    <p><b>Login</b></p>
 
                     <label>Email: </label>
                     <input style={inputStyles} type="text" onChange={(e) => setEmail(e.target.value)} value={email}></input>

@@ -16,10 +16,23 @@ const Main = () => {
             .catch(err => console.log(err));
     }, []);
 
-    const recipeCardStyle = {
-        margin: '10px',
+    const mainStyle = {
+        display: 'flex',
+        justifyContent: 'center',
+        flexDirection: 'column',
+        minWidth: '300px',
+        margin: '10px'
+    }
+
+    const cardStyle = {
+        color: 'white', 
+        flex: '1',
+        maxWidth: '600px',
+        backgroundColor: '#F1C376',
+        borderRadius: '5px',
+        display: 'grid',
         padding: '10px',
-        border: '1px solid black'
+        margin: '5px'
     }
 
     return (
@@ -28,16 +41,19 @@ const Main = () => {
             
             && 
             
-            (<>
+            (<main style={mainStyle}>
                 {sharedRecipes.map((recipe, index) => {
                     return (
-                        <div key={index} style={recipeCardStyle}>
+                        <div key={index} style={cardStyle}>
                             <p>Created by: {recipe.user}</p>
                             <p>Recipe name: {recipe.recipe.name}</p>
                         </div>
                     );
                 })}
-            </>
+                <div style={cardStyle}>
+                    <p>Hello</p>
+                </div>
+            </main>
             )}
         </>
     );

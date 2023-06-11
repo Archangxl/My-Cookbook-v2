@@ -1,5 +1,5 @@
 import LoggedInNavbar from "../Components/LoggedInNavbar";
-import UsersCookbook from "../Components/userLggedInCookbook";
+import UsersCookbook from "../Components/UserLggedInCookbook";
 
 const Cookbook = () => {
 

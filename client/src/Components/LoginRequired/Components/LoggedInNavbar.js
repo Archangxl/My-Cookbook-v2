@@ -32,6 +32,17 @@ const LoggedInNavbar = () => {
         fontSize: '16px'
     }
 
+    const headerStyle = {
+        display: 'flex', 
+        justifyContent: 'center',
+        minWidth: '300px'
+    }
+
+    const headerPageTitleStyle = {
+        fontSize: '16px', 
+        fontWeight: '600'
+    }
+
     return (
         <>
             <nav style={navStyle}>
@@ -40,6 +51,10 @@ const LoggedInNavbar = () => {
                 <p style={linkStyle} onClick={logOut}>logout</p>
 
             </nav>
+
+            <header style={headerStyle}>
+                <p style={headerPageTitleStyle}>Your Recipes</p>
+            </header>
         </>
     );
 }
