@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react';
 import React from 'react';
 import axios from 'axios';
+import Recipe from '../../UniversalComponents/Recipe';
 
 const Main = () => {
     const [sharedRecipes, setSharedRecipes] = useState({});
@@ -44,10 +45,7 @@ const Main = () => {
             (<main style={mainStyle}>
                 {sharedRecipes.map((recipe, index) => {
                     return (
-                        <div key={index} style={cardStyle}>
-                            <p>Created by: {recipe.user}</p>
-                            <p>Recipe name: {recipe.recipe.name}</p>
-                        </div>
+                        <Recipe recipe={recipe} key={index} />
                     );
                 })}
                 <div style={cardStyle}>
