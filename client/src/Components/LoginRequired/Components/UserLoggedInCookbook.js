@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react';
 import React from 'react';
 import axios from 'axios';
+import Recipe from '../../UniversalComponents/Recipe';
 
 const UserLoggedInCookbook = () => {
 
@@ -19,21 +20,10 @@ const UserLoggedInCookbook = () => {
 
     const mainStyle = {
         display: 'flex',
-        justifyContent: 'center',
+        alignItems: 'center',
         flexDirection: 'column',
         minWidth: '300px',
         margin: '10px'
-    }
-
-    const cardStyle = {
-        color: 'white', 
-        flex: '1',
-        maxWidth: '600px',
-        backgroundColor: '#F1C376',
-        borderRadius: '5px',
-        display: 'grid',
-        padding: '10px',
-        margin: '5px'
     }
 
     return (
@@ -45,13 +35,10 @@ const UserLoggedInCookbook = () => {
             (<main style={mainStyle}>
                 {usersRecipes.map((recipe, index) => {
                     return (
-                        <div key={index} style={cardStyle}>
-                            <p>Recipe Name: {recipe.name}</p>
-                        </div>
+                        <Recipe recipeName={recipe.name} key={index} />
                     );
                 })}
-            </main>
-            )}
+            </main>)}
         </>
     );
 

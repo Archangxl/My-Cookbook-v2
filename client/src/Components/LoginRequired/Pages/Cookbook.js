@@ -1,5 +1,5 @@
 import LoggedInNavbar from "../Components/LoggedInNavbar";
-import UsersCookbook from "../Components/UserLggedInCookbook";
+import UsersCookbook from "../Components/UserLoggedInCookbook";
 
 const Cookbook = () => {
 
@@ -7,7 +7,6 @@ const Cookbook = () => {
         <>
             <LoggedInNavbar />
             <UsersCookbook />
-
         </>
     );
 

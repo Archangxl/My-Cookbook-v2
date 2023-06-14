@@ -18,22 +18,10 @@ const Main = () => {
     }, []);
 
     const mainStyle = {
-        display: 'flex',
-        justifyContent: 'center',
-        flexDirection: 'column',
         minWidth: '300px',
-        margin: '10px'
-    }
-
-    const cardStyle = {
-        color: 'white', 
-        flex: '1',
-        maxWidth: '600px',
-        backgroundColor: '#F1C376',
-        borderRadius: '5px',
+        margin: '10px',
         display: 'grid',
-        padding: '10px',
-        margin: '5px'
+        justifyItems: 'center'
     }
 
     return (
@@ -45,12 +33,9 @@ const Main = () => {
             (<main style={mainStyle}>
                 {sharedRecipes.map((recipe, index) => {
                     return (
-                        <Recipe recipe={recipe} key={index} />
+                        <Recipe recipeName={recipe.recipe.name} userWhoPostedRecipe={recipe.user} key={index} />
                     );
                 })}
-                <div style={cardStyle}>
-                    <p>Hello</p>
-                </div>
             </main>
             )}
         </>

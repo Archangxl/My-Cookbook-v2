@@ -1,19 +1,10 @@
 
 
-const Recipe = ({recipe}) => {
-
-    const mainStyle = {
-        display: 'flex',
-        justifyContent: 'center',
-        flexDirection: 'column',
-        minWidth: '300px',
-        margin: '10px'
-    }
+const Recipe = ({recipeName, userWhoPostedRecipe = false}) => {
 
     const cardStyle = {
         color: 'white', 
-        flex: '1',
-        maxWidth: '600px',
+        width: '75%',
         backgroundColor: '#F1C376',
         borderRadius: '5px',
         display: 'grid',
@@ -22,12 +13,10 @@ const Recipe = ({recipe}) => {
     }
 
     return(
-        <main style={mainStyle}>
-            <div style={cardStyle}>
-                <p>Created by: {recipe.user}</p>
-                <p>Recipe name: {recipe.recipe.name}</p>
-            </div>
-        </main>
+        <div style={cardStyle}>
+            {userWhoPostedRecipe !== false ? <p>Shared by: {userWhoPostedRecipe} </p> : null}
+            <p>Recipe name: {recipeName}</p>
+        </div>
     );
 
 }
