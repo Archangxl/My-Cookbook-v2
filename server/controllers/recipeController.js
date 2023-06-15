@@ -9,12 +9,13 @@ module.exports = {
 
         /*
         Test run provider
-        */
+        
         const ingredientList = [{measurement: '1 cup', item: 'flour'}];
         const stepList = [{description: 'put in bowl'}];
+        */
         
 
-        const recipeCreation = await Recipe.create({userId: activeUserToken.userId, name: request.body.name, ingredientList: /*request.body.*/ingredientList, stepList: /*request.body.*/stepList}).catch(error => response.status(400).json(error));
+        const recipeCreation = await Recipe.create({userId: activeUserToken.userId, name: request.body.recipeName, ingredientList: request.body.ingredientList, stepList: request.body.stepList}).catch(error => response.status(400).json(error));
 
         if (recipeCreation.name === undefined) {
             return null;
@@ -39,7 +40,7 @@ module.exports = {
     
     grabSpecifiedRecipe: async (request, response) => {
         const grabbingRecipe = await Recipe.findOne({_id: request.params.recipeId});
-
+        
         response
             .status(200)
             .json({recipe: grabbingRecipe});
@@ -52,7 +53,7 @@ module.exports = {
         const ingredients = [{measurement: '1 cup', item: 'flour'}];
         const steps = [{description: 'put in bowl'}];
         */
-        const willTheRecipeUpdate = await Recipe.findOneAndUpdate({_id: request.params.recipeId}, {name: request.body.name, ingredientList: request.body.ingredients, stepList: request.body.stepList} ,{new: true, runValidators: true}).catch(err => response.status(400).json(err));
+        const willTheRecipeUpdate = await Recipe.findOneAndUpdate({_id: request.params.recipeId}, {name: request.body.recipeName, ingredientList: request.body.ingredientList, stepList: request.body.stepList} ,{new: true, runValidators: true}).catch(err => response.status(400).json(err));
         
         if (willTheRecipeUpdate.name === undefined) {
             return null;

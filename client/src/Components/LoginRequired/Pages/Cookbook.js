@@ -5,7 +5,7 @@ const Cookbook = () => {
 
     return(
         <>
-            <LoggedInNavbar />
+            <LoggedInNavbar headerName="Your Cookbook" navType="User Cookbook"/>
             <UsersCookbook />
         </>
     );

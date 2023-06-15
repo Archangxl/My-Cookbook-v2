@@ -1,7 +1,7 @@
-import {useEffect, useState} from 'react';
-import React from 'react';
+import React ,{useEffect, useState} from 'react';
 import axios from 'axios';
 import Recipe from '../../UniversalComponents/Recipe';
+import { useNavigate } from 'react-router-dom';
 
 const UserLoggedInCookbook = () => {
 
@@ -16,14 +16,27 @@ const UserLoggedInCookbook = () => {
                 setLoaded(true);
             })
             .catch(err => console.log(err));
-    }, []);
+    }, [usersRecipes]);
 
     const mainStyle = {
-        display: 'flex',
-        alignItems: 'center',
-        flexDirection: 'column',
-        minWidth: '300px',
-        margin: '10px'
+        minWidth: '320px',
+        padding: '0px 10px',
+        display: 'grid',
+        justifyItems: 'center'
+    }
+
+    const navigate = useNavigate();
+
+    const deleteRecipe = async(recipeId) => {
+        await axios.delete(
+            'http://localhost:8000/api/deleteRecipe/' + recipeId,
+            {withCredentials: true}
+        );
+        navigate('/cookbook');
+    }
+
+    const navigateToUpdateRecipe = (recipeId) => {
+        navigate('/updateRecipe/' + recipeId);
     }
 
     return (
@@ -35,7 +48,13 @@ const UserLoggedInCookbook = () => {
             (<main style={mainStyle}>
                 {usersRecipes.map((recipe, index) => {
                     return (
-                        <Recipe recipeName={recipe.name} key={index} />
+                        <Recipe 
+                            recipeName={recipe.name} 
+                            key={index} 
+                            recipeId={recipe._id}
+                            deleteRecipe={deleteRecipe}
+                            navigateToUpdateRecipe={navigateToUpdateRecipe}
+                        />
                     );
                 })}
             </main>)}

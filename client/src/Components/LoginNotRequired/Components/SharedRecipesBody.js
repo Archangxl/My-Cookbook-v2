@@ -18,8 +18,8 @@ const Main = () => {
     }, []);
 
     const mainStyle = {
-        minWidth: '300px',
-        margin: '10px',
+        minWidth: '320px',
+        padding:'0px 10px',
         display: 'grid',
         justifyItems: 'center'
     }

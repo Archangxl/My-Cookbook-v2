@@ -1,0 +1,283 @@
+import LoggedInNavbar from "../Components/LoggedInNavbar";
+import CreateRecipeForm from "../Components/CreateRecipeForm";
+import React, { useState, useCallback, useEffect } from 'react';
+import { useNavigate, useParams } from "react-router-dom";
+import axios from 'axios';
+
+const CreateOrUpdateRecipe = ({formType}) => {
+
+    const mainStyle = {
+        display: 'flex',
+        justifyContent: 'center',
+        minWidth: '320px',
+        padding: '10px'
+    }
+
+    const formStyle = {
+        color: 'black', 
+        flex: '1',
+        maxWidth: '800px',
+        width: '80%',
+        backgroundColor: '#F1C376',
+        borderRadius: '5px',
+        display: 'grid',
+        padding: '10px',
+        gap: '10px',
+    }
+
+    const labelStyleForMeasurements = {
+        width: '50%',
+        padding: '0px 5px 0px 0px'
+    }
+
+    const labelStyleForItems = {
+        width: '95%',
+        padding: '0px 5px 0px 5px'
+    }
+
+    const inputStyle = {
+        borderRadius: '5px',
+        border: '1px solid white',
+        padding: '5px',
+    }
+
+    const itemInputStyle = {
+        borderRadius: '5px',
+        border: '1px solid white',
+        padding: '5px',
+        width: '95%'
+    }
+
+    const measurementInputStyle = {
+        borderRadius: '5px',
+        border: '1px solid white',
+        padding: '5px',
+        margin: '0px 5px 0px 0px',
+        width: '50%'
+    }
+
+    const buttonSytle = {
+        padding: '6px 10px 5px 10px',
+        borderRadius: '5px',
+        border: '2px solid #606C5D',
+        backgroundColor: 'white',
+        color: '#606C5D',
+        cursor: 'pointer'
+    }
+
+    const [recipeName, setRecipeName] = useState("");
+    const [ingredients, setIngredients] = useState([{measurement: '', item: ''}]);
+    const [instructions, setInstructions] = useState([{description: ''}]);
+    
+    const [recipeNameError, setRecipeNameError] = useState(null);
+    const [ingredientError, setIngredientError] = useState(null);
+    const [instructionError, setInstructionError] = useState(null);
+
+    const handleIngredientAddition = useCallback((e) => {
+        e.preventDefault();
+        setIngredients(ingredients => [...ingredients, {measurement: '', item: ''}]);
+        // eslint-disable-next-line 
+    }, [ingredients]);
+
+    const handleIngredientSubtraction = useCallback((e) => {
+        e.preventDefault();
+        let copyOfIngredientsArray = [...ingredients];
+        copyOfIngredientsArray.pop();
+        setIngredients(copyOfIngredientsArray)
+    }, [ingredients]);
+
+    const handleInstructionAddition = useCallback((e) => {
+        e.preventDefault();
+        setInstructions(instructions => [...instructions, {description: ''}]);
+        // eslint-disable-next-line 
+    }, [instructions]);
+
+    const handleInstructionSubstraction = useCallback((e) => {
+        e.preventDefault();
+        let copyOfInstructionArray = [...instructions];
+        copyOfInstructionArray.pop();
+        setInstructions(copyOfInstructionArray);
+    }, [instructions]);
+
+    const navigate = useNavigate();
+
+    const checkForInstructionErrors = () => {
+        let errorTicker = false;
+        instructions.forEach((instruction) => {
+            if (instruction.description === '') {
+                errorTicker = true;
+                setInstructionError(<span style={{color: 'red'}}>Please delete any empty fields</span>);
+            } else {
+                if (!errorTicker === true) {
+                    setInstructionError(null);
+                }
+            }
+        })
+    }
+
+    const checkForIngredientErrors = () => {
+        let errorTicker = false;
+        ingredients.forEach((ingredient) => {
+
+            if (ingredient.item === '') {
+                errorTicker = true;
+                setIngredientError(<span style={{color: 'red'}}>Please delete any empty fields</span>);
+            } else {
+                if (!errorTicker === true) {
+                    setIngredientError(null);
+                }
+            }
+
+            if (ingredient.measurement === '') {
+                errorTicker = true;
+                setIngredientError(<span style={{color: 'red'}}>Please delete any empty fields</span>);
+            } else {
+                if (!errorTicker === true) {
+                    setIngredientError(null);
+                }
+            }
+        })
+    }
+
+    const handleSetRecipeNameError = (error) => {
+        setRecipeNameError(error === undefined ? null : <span style={{color: 'red'}}>{error.message}</span>);
+    }
+
+    const handleCreateRecipeSubmit = async (e) => {
+        e.preventDefault(); 
+
+        try {
+            await axios.post(
+                'http://localhost:8000/api/createRecipe', 
+                {recipeName: recipeName, ingredientList: ingredients, stepList: instructions},
+                {withCredentials: true}
+            );
+            navigate('/cookbook')
+        }
+
+        catch(error) {
+            checkForIngredientErrors();
+
+            checkForInstructionErrors();
+
+            handleSetRecipeNameError(error.response.data.errors.name);
+        }
+    }
+
+    const {recipeId} = useParams();
+
+    const ifFormTypeIsUpdateThenUpdateRecipeNameIngredientsAndInstructions = async () => {
+        try {
+            const recipe = await axios.get(
+                'http://localhost:8000/api/grabSpecifiedRecipe/' + recipeId,
+                {withCredentials: true}
+            )
+            setRecipeName(recipe.data.recipe.name);
+            setIngredients(recipe.data.recipe.ingredientList);
+            setInstructions(recipe.data.recipe.stepList)            
+        }
+        catch(error) {
+            console.log(error);
+        }
+    }
+
+    const doesFormTypeEqualUpdate = () => {
+        if (formType === 'Update') {
+            ifFormTypeIsUpdateThenUpdateRecipeNameIngredientsAndInstructions();
+        }
+    }
+
+    useEffect(() => {
+        doesFormTypeEqualUpdate();
+        // eslint-disable-next-line
+    }, [])
+
+    const handleUpdateRecipeSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            await axios.put(
+                'http://localhost:8000/api/updateRecipe/' + recipeId, 
+                {recipeName: recipeName, ingredientList: ingredients, stepList: instructions},
+                {withCredentials: true}
+            )
+            navigate('/cookbook')
+        }
+        
+        catch(error) {
+            checkForIngredientErrors();
+
+            checkForInstructionErrors();
+
+            handleSetRecipeNameError(error.response.data.errors.name);
+        }
+    }
+
+    return(
+        <>
+            {
+                formType === "Login" &&
+                <>
+                    <LoggedInNavbar 
+                        headerName="Add Recipe to Cookbook"  
+                        navType="Recipe Create/Update"
+                    />
+                    <CreateRecipeForm 
+                        mainStyle={mainStyle} 
+                        formStyle={formStyle} 
+                        inputStyle={inputStyle} 
+                        buttonSytle={buttonSytle} 
+                        labelStyleForItems={labelStyleForItems}
+                        labelStyleForMeasurements={labelStyleForMeasurements}
+                        measurementInputStyle={measurementInputStyle}
+                        itemInputStyle={itemInputStyle}
+                        recipeName={recipeName} setRecipeName={setRecipeName}
+                        ingredients={ingredients} setIngredients={setIngredients}
+                        instructions={instructions} setInstructions={setInstructions}
+                        handleIngredientAddition={handleIngredientAddition}
+                        handleIngredientSubtraction={handleIngredientSubtraction}
+                        handleInstructionAddition={handleInstructionAddition}
+                        handleInstructionSubstraction={handleInstructionSubstraction}
+                        handleSubmit={handleCreateRecipeSubmit}
+                        recipeNameError={recipeNameError} 
+                        ingredientError={ingredientError}
+                        instructionError={instructionError}
+                    />
+                </>
+            }
+
+            {
+                formType === "Update" && 
+                <>
+                    <LoggedInNavbar 
+                        headerName="Update Recipe"  
+                        navType="Recipe Create/Update"
+                    />
+                    <CreateRecipeForm 
+                        mainStyle={mainStyle} 
+                        formStyle={formStyle} 
+                        inputStyle={inputStyle} 
+                        buttonSytle={buttonSytle} 
+                        labelStyleForItems={labelStyleForItems}
+                        labelStyleForMeasurements={labelStyleForMeasurements}
+                        measurementInputStyle={measurementInputStyle}
+                        itemInputStyle={itemInputStyle}
+                        recipeName={recipeName} setRecipeName={setRecipeName}
+                        ingredients={ingredients} setIngredients={setIngredients}
+                        instructions={instructions} setInstructions={setInstructions}
+                        handleIngredientAddition={handleIngredientAddition}
+                        handleIngredientSubtraction={handleIngredientSubtraction}
+                        handleInstructionAddition={handleInstructionAddition}
+                        handleInstructionSubstraction={handleInstructionSubstraction}
+                        handleSubmit={handleUpdateRecipeSubmit}
+                        recipeNameError={recipeNameError} 
+                        ingredientError={ingredientError}
+                        instructionError={instructionError}
+                    />
+                </>
+            }
+        </>
+    );
+
+}
+export default CreateOrUpdateRecipe;

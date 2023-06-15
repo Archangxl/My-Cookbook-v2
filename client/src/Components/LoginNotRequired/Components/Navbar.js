@@ -9,7 +9,7 @@ const Navbar = ({login = false, register = false, landingPage = false}) => {
         padding: '10px',
         backgroundColor: '#606C5D',
         color: 'white',
-        minWidth: '300px'
+        minWidth: '320px'
     }
 
     const titleStyle = {
@@ -26,13 +26,13 @@ const Navbar = ({login = false, register = false, landingPage = false}) => {
     const headerStyle = {
         display: 'flex', 
         justifyContent: 'center',
-        minWidth: '300px'
-    }
-
-    const headerPageTitleStyle = {
+        minWidth: '320px',
+        padding: '0px 10px',
         fontSize: '16px', 
         fontWeight: '600'
     }
+
+
 
     return (
         <>
@@ -50,7 +50,7 @@ const Navbar = ({login = false, register = false, landingPage = false}) => {
                 </nav>
 
                 <header style={headerStyle}>
-                    <p style={headerPageTitleStyle}>Shared Recipes</p>
+                    <p>Shared Recipes</p>
                 </header>
 
             </>
@@ -69,7 +69,7 @@ const Navbar = ({login = false, register = false, landingPage = false}) => {
                 </nav>
 
                 <header style={headerStyle}>
-                    <p style={headerPageTitleStyle}>Login</p>
+                    <p>Login</p>
                 </header>
 
             </>
@@ -88,7 +88,7 @@ const Navbar = ({login = false, register = false, landingPage = false}) => {
                 </nav>
 
                 <header style={headerStyle}>
-                    <p style={headerPageTitleStyle}>Register</p>
+                    <p>Register</p>
                 </header>
             </>
         }
