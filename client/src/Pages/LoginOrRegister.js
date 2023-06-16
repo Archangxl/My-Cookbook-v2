@@ -1,6 +1,6 @@
-import Navbar from "../Components/Navbar";
-import RegisterForm from "../Components/RegisterForm";
-import LoginForm from "../Components/LoginForm";
+import Navbar from "../Components/NavsAndHeaders/NotLoggedInNavbar";
+import RegisterForm from "../Components/Mains/RegisterForm";
+import LoginForm from "../Components/Mains/LoginForm";
 
 const LoginOrRegister = ({formType}) => {
 

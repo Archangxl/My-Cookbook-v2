@@ -1,8 +1,8 @@
-import LoggedInNavbar from "../Components/LoggedInNavbar";
-import CreateRecipeForm from "../Components/CreateRecipeForm";
 import React, { useState, useCallback, useEffect } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 import axios from 'axios';
+import LoggedInNavbar from "../Components/NavsAndHeaders/LoggedInNavbar";
+import CreateRecipeForm from "../Components/Mains/CreateRecipeForm";
 
 const CreateOrUpdateRecipe = ({formType}) => {
 

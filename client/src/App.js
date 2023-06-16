@@ -1,8 +1,8 @@
-import LandingPage from "./Components/LoginNotRequired/Pages/Landing";
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
-import LoginOrRegister from "./Components/LoginNotRequired/Pages/LoginOrRegister";
-import Cookbook from "./Components/LoginRequired/Pages/Cookbook";
-import CreateOrUpdateRecipe from "./Components/LoginRequired/Pages/CreateOrUpdateRecipe";
+import LandingPage from "./Pages/Landing";
+import LoginOrRegister from "./Pages/LoginOrRegister";
+import Cookbook from "./Pages/Cookbook";
+import CreateOrUpdateRecipe from "./Pages/CreateOrUpdateRecipe";
 
 function App() {
 

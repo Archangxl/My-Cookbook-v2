@@ -1,6 +1,6 @@
 import React ,{useEffect, useState} from 'react';
 import axios from 'axios';
-import Recipe from '../../UniversalComponents/Recipe';
+import Recipe from './TemplateForRecipes';
 import { useNavigate } from 'react-router-dom';
 
 const UserLoggedInCookbook = () => {

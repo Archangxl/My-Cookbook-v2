@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react';
 import React from 'react';
 import axios from 'axios';
-import Recipe from '../../UniversalComponents/Recipe';
+import Recipe from './TemplateForRecipes';
 
 const Main = () => {
     const [sharedRecipes, setSharedRecipes] = useState({});
