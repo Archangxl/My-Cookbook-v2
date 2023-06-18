@@ -10,9 +10,9 @@ module.exports = {
             return response.status(400).json({email: "Email already Exists"});
         }
 
-        const userCreation = await User.create({fullName: request.body.fullName, email: request.body.email, password: request.body.password, confirmPassword: request.body.confirmPassword}).catch(err=> response.status(400).json(err));
+        const userCreation = await User.create({fullName: request.body.fullName, email: request.body.email, password: request.body.password, confirmPassword: request.body.confirmPassword}).catch(err=> {return response.status(400).json(err)});
         
-        if (userCreation === undefined) {
+        if (userCreation.fullName === undefined) {
             return null;
         }
 
@@ -34,17 +34,17 @@ module.exports = {
         const doesTheUserExist = await User.findOne({email: request.body.email});
 
         if (doesTheUserExist === null) {
-            return response.status(400).json({message: "Email is incorrect"});
+            return response.status(400).json({email: "Email is incorrect"});
         }
 
         if (request.body.password === undefined) {
-            return response.status(400).json({message: "Please fill out the password"});
+            return response.status(400).json({password: "Please fill out the password"});
         }
 
         const doesThePasswordMatchTheDatabasePassword = await bcrypt.compare(request.body.password, doesTheUserExist.password);
 
         if (doesThePasswordMatchTheDatabasePassword === false) {
-            return response.status(400).json({message: "Password is incorrect"});
+            return response.status(400).json({password: "Password is incorrect"});
         }
 
         const tokenContents = {

@@ -1,14 +1,6 @@
 import React from 'react';
 
-const CreateRecipeForm = ({
-        mainStyle, 
-        formStyle, 
-        labelStyleForItems, 
-        labelStyleForMeasurements, 
-        itemInputStyle,
-        measurementInputStyle,
-        inputStyle, 
-        buttonSytle,
+const CreateUpdateRecipeForm = ({
         handleIngredientAddition,
         handleIngredientSubtraction,
         handleInstructionAddition,
@@ -21,6 +13,66 @@ const CreateRecipeForm = ({
         ingredientError,
         instructionError
     }) => {
+
+        
+    const mainStyle = {
+        display: 'flex',
+        justifyContent: 'center',
+        minWidth: '320px',
+        padding: '10px'
+    }
+
+    const formStyle = {
+        color: 'black', 
+        flex: '1',
+        maxWidth: '800px',
+        width: '80%',
+        backgroundColor: '#F1C376',
+        borderRadius: '5px',
+        display: 'grid',
+        padding: '10px',
+        gap: '10px',
+    }
+
+    const labelStyleForMeasurements = {
+        width: '50%',
+        padding: '0px 5px 0px 0px'
+    }
+
+    const labelStyleForItems = {
+        width: '95%',
+        padding: '0px 5px 0px 5px'
+    }
+
+    const inputStyle = {
+        borderRadius: '5px',
+        border: '1px solid white',
+        padding: '5px',
+    }
+
+    const itemInputStyle = {
+        borderRadius: '5px',
+        border: '1px solid white',
+        padding: '5px',
+        width: '95%'
+    }
+
+    const measurementInputStyle = {
+        borderRadius: '5px',
+        border: '1px solid white',
+        padding: '5px',
+        margin: '0px 5px 0px 0px',
+        width: '50%'
+    }
+
+    const buttonSytle = {
+        padding: '6px 10px 5px 10px',
+        borderRadius: '5px',
+        border: '2px solid #606C5D',
+        backgroundColor: 'white',
+        color: '#606C5D',
+        cursor: 'pointer'
+    }
 
     return (
         <>
@@ -104,4 +156,4 @@ const CreateRecipeForm = ({
         </>
     );
 }
-export default CreateRecipeForm;
+export default CreateUpdateRecipeForm;

@@ -1,5 +1,12 @@
 
-const Recipe = ({recipeName, userWhoPostedRecipe = false, recipeId, deleteRecipe, navigateToUpdateRecipe}) => {
+const Recipe = ({
+        recipeName, 
+        userWhoPostedRecipe = false, 
+        recipeId, 
+        deleteRecipe, 
+        navigateToUpdateRecipe,
+        navigateToViewRecipe,
+    }) => {
 
     const cardStyle = {
         color: 'black', 
@@ -33,6 +40,13 @@ const Recipe = ({recipeName, userWhoPostedRecipe = false, recipeId, deleteRecipe
                 ? 
 
                 <div>
+                    <button
+                        style={buttonSytle}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            navigateToViewRecipe(recipeId);
+                        }}
+                    >View Recipe</button>
                     <button 
                         style={buttonSytle}
                         onClick={(e) => {

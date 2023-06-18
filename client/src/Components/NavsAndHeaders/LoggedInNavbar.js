@@ -68,7 +68,7 @@ const LoggedInNavbar = ({headerName, navType}) => {
                 </>
             }
             {
-                navType === "Recipe Create/Update" &&
+                navType === "Recipe Create/Update/View" &&
                 <>
                     <nav style={navStyle}>
 

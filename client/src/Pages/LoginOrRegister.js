@@ -4,7 +4,7 @@ import LoginForm from "../Components/Mains/LoginForm";
 
 const LoginOrRegister = ({formType}) => {
 
-        const mainStyle = {
+    const mainStyle = {
         display: 'flex',
         justifyContent: 'center',
         minWidth: '320px',
@@ -42,12 +42,21 @@ const LoginOrRegister = ({formType}) => {
             {formType === 'Register' && 
             <>
                 <Navbar register={true} />
-                <RegisterForm mainStyle={mainStyle} formStyle={formStyle} inputStyle={inputStyle} buttonSytle={buttonSytle} />            
+                <RegisterForm 
+                    mainStyle={mainStyle} 
+                    formStyle={formStyle} 
+                    inputStyle={inputStyle} 
+                    buttonSytle={buttonSytle} 
+                />            
             </>}
             {formType === 'Login' && 
             <>
                 <Navbar login={true} />
-                <LoginForm mainStyle={mainStyle} formStyle={formStyle} inputStyle={inputStyle} buttonSytle={buttonSytle} />
+                <LoginForm 
+                    mainStyle={mainStyle} 
+                    formStyle={formStyle} 
+                    inputStyle={inputStyle} 
+                    buttonSytle={buttonSytle} />
             </>}
         </>
     );

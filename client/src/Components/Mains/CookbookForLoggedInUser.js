@@ -7,6 +7,7 @@ const UserLoggedInCookbook = () => {
 
     const [usersRecipes, setUsersRecipes] = useState([]);
     const [loaded, setLoaded] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         axios
@@ -25,18 +26,21 @@ const UserLoggedInCookbook = () => {
         justifyItems: 'center'
     }
 
-    const navigate = useNavigate();
-
     const deleteRecipe = async(recipeId) => {
-        await axios.delete(
+        axios.delete(
             'http://localhost:8000/api/deleteRecipe/' + recipeId,
             {withCredentials: true}
-        );
-        navigate('/cookbook');
+        )
+            .then(res =>  navigate('/cookbook'))
+            .catch(err => console.log(err));
     }
 
     const navigateToUpdateRecipe = (recipeId) => {
         navigate('/updateRecipe/' + recipeId);
+    }
+
+    const navigateToViewRecipe = (recipeId) => {
+        navigate('/viewRecipe/' + recipeId);
     }
 
     return (
@@ -54,6 +58,7 @@ const UserLoggedInCookbook = () => {
                             recipeId={recipe._id}
                             deleteRecipe={deleteRecipe}
                             navigateToUpdateRecipe={navigateToUpdateRecipe}
+                            navigateToViewRecipe={navigateToViewRecipe}
                         />
                     );
                 })}

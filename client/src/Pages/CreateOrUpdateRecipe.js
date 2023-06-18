@@ -2,68 +2,9 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 import axios from 'axios';
 import LoggedInNavbar from "../Components/NavsAndHeaders/LoggedInNavbar";
-import CreateRecipeForm from "../Components/Mains/CreateRecipeForm";
+import CreateRecipeForm from "../Components/Mains/CreateUpdateRecipeForm";
 
 const CreateOrUpdateRecipe = ({formType}) => {
-
-    const mainStyle = {
-        display: 'flex',
-        justifyContent: 'center',
-        minWidth: '320px',
-        padding: '10px'
-    }
-
-    const formStyle = {
-        color: 'black', 
-        flex: '1',
-        maxWidth: '800px',
-        width: '80%',
-        backgroundColor: '#F1C376',
-        borderRadius: '5px',
-        display: 'grid',
-        padding: '10px',
-        gap: '10px',
-    }
-
-    const labelStyleForMeasurements = {
-        width: '50%',
-        padding: '0px 5px 0px 0px'
-    }
-
-    const labelStyleForItems = {
-        width: '95%',
-        padding: '0px 5px 0px 5px'
-    }
-
-    const inputStyle = {
-        borderRadius: '5px',
-        border: '1px solid white',
-        padding: '5px',
-    }
-
-    const itemInputStyle = {
-        borderRadius: '5px',
-        border: '1px solid white',
-        padding: '5px',
-        width: '95%'
-    }
-
-    const measurementInputStyle = {
-        borderRadius: '5px',
-        border: '1px solid white',
-        padding: '5px',
-        margin: '0px 5px 0px 0px',
-        width: '50%'
-    }
-
-    const buttonSytle = {
-        padding: '6px 10px 5px 10px',
-        borderRadius: '5px',
-        border: '2px solid #606C5D',
-        backgroundColor: 'white',
-        color: '#606C5D',
-        cursor: 'pointer'
-    }
 
     const [recipeName, setRecipeName] = useState("");
     const [ingredients, setIngredients] = useState([{measurement: '', item: ''}]);
@@ -72,6 +13,8 @@ const CreateOrUpdateRecipe = ({formType}) => {
     const [recipeNameError, setRecipeNameError] = useState(null);
     const [ingredientError, setIngredientError] = useState(null);
     const [instructionError, setInstructionError] = useState(null);
+
+    const navigate = useNavigate();
 
     const handleIngredientAddition = useCallback((e) => {
         e.preventDefault();
@@ -98,8 +41,6 @@ const CreateOrUpdateRecipe = ({formType}) => {
         copyOfInstructionArray.pop();
         setInstructions(copyOfInstructionArray);
     }, [instructions]);
-
-    const navigate = useNavigate();
 
     const checkForInstructionErrors = () => {
         let errorTicker = false;
@@ -220,17 +161,9 @@ const CreateOrUpdateRecipe = ({formType}) => {
                 <>
                     <LoggedInNavbar 
                         headerName="Add Recipe to Cookbook"  
-                        navType="Recipe Create/Update"
+                        navType="Recipe Create/Update/View"
                     />
                     <CreateRecipeForm 
-                        mainStyle={mainStyle} 
-                        formStyle={formStyle} 
-                        inputStyle={inputStyle} 
-                        buttonSytle={buttonSytle} 
-                        labelStyleForItems={labelStyleForItems}
-                        labelStyleForMeasurements={labelStyleForMeasurements}
-                        measurementInputStyle={measurementInputStyle}
-                        itemInputStyle={itemInputStyle}
                         recipeName={recipeName} setRecipeName={setRecipeName}
                         ingredients={ingredients} setIngredients={setIngredients}
                         instructions={instructions} setInstructions={setInstructions}
@@ -251,17 +184,9 @@ const CreateOrUpdateRecipe = ({formType}) => {
                 <>
                     <LoggedInNavbar 
                         headerName="Update Recipe"  
-                        navType="Recipe Create/Update"
+                        navType="Recipe Create/Update/View"
                     />
                     <CreateRecipeForm 
-                        mainStyle={mainStyle} 
-                        formStyle={formStyle} 
-                        inputStyle={inputStyle} 
-                        buttonSytle={buttonSytle} 
-                        labelStyleForItems={labelStyleForItems}
-                        labelStyleForMeasurements={labelStyleForMeasurements}
-                        measurementInputStyle={measurementInputStyle}
-                        itemInputStyle={itemInputStyle}
                         recipeName={recipeName} setRecipeName={setRecipeName}
                         ingredients={ingredients} setIngredients={setIngredients}
                         instructions={instructions} setInstructions={setInstructions}
