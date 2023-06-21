@@ -2,7 +2,10 @@ const ViewRecipeTemplate = ({
     recipe,
     deleteRecipe,
     navigateToUpdateRecipe,
-    recipeId
+    recipeId,
+    isRecipeASharedRecipe,
+    shareRecipe,
+    unshareRecipe
     }) => {
 
     const mainStyle = {
@@ -55,6 +58,27 @@ const ViewRecipeTemplate = ({
                     }
                 </ol>
                 <div>
+                    {
+                        isRecipeASharedRecipe === true ?
+                        // if the recipe has been shared
+                        <button
+                        style={buttonSytle}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            unshareRecipe(recipeId);
+                        }}
+                        >Unshare Recipe</button>
+                        
+                        : 
+                        //if the recipe hasn't been shared
+                        <button
+                        style={buttonSytle}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            shareRecipe(recipeId);
+                        }}
+                        >Share Recipe</button>
+                    }
                     <button 
                         style={buttonSytle}
                         onClick={(e) => {

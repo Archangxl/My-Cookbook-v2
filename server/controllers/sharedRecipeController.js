@@ -38,7 +38,11 @@ module.exports = {
 
     
     grabSpecifiedSharedRecipe: async (request, response) => {
-        const grabbingAllSharedRecipes = await SharedRecipe.findOne({_id: request.params.sharedRecipeId});
+        const grabbingAllSharedRecipes = await SharedRecipe.findOne({recipeId: request.params.sharedRecipeId}).catch(err => res.status(400).json("error"));
+        if (grabbingAllSharedRecipes === null) {
+            response.status(200).json({isRecipeASharedRecipe: false});
+            return null;
+        }
 
         const userInformation = await User.findById({_id: grabbingAllSharedRecipes.userId});
         const userPackage = {name: userInformation.fullName};
@@ -48,12 +52,12 @@ module.exports = {
 
         response 
             .status(200)
-            .json({user: userPackage, recipe: recipePackage});
+            .json({user: userPackage, recipe: recipePackage, isRecipeASharedRecipe: true});
     },
 
 
     deleteSharedRecipe: async (request, response) => {
-        await SharedRecipe.deleteOne({_id: request.params.sharedRecipeId});
+        await SharedRecipe.deleteOne({recipeId: request.params.sharedRecipeId});
 
         response
             .status(200)

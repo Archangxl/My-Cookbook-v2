@@ -9,15 +9,38 @@ const ViewRecipe = () => {
     const {recipeId} = useParams();
     const [recipe, setRecipe] = useState([]);
     const [loaded, setLoaded] = useState(false);
+    const [isRecipeASharedRecipe, setIsRecipeASharedRecipe] = useState(false);
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        axios.get('http://localhost:8000/api/grabSpecifiedSharedRecipe/' + recipeId)
+            .then((res) => {
+                setIsRecipeASharedRecipe(res.data.isRecipeASharedRecipe);
+            })
+            // eslint-disable-next-line
+    }, [isRecipeASharedRecipe])
+
+    const validatingRecipeWasShared = async(recipeId) => {
+        const validate = await axios.get('http://localhost:8000/api/grabSpecifiedSharedRecipe/' + recipeId).catch(err => console.log(err));
+        setIsRecipeASharedRecipe(validate.data.isRecipeASharedRecipe);
+    }
+
+    const shareRecipe = async(recipeId) => {
+        await axios.post('http://localhost:8000/api/userSharingRecipe/' + recipeId, null, {withCredentials: true}).catch(err=> console.log(err));
+        validatingRecipeWasShared(recipeId);
+    }
+
+    const unshareRecipe = async(recipeId) => {
+        await axios.delete('http://localhost:8000/api/deleteSharedRecipe/' + recipeId, {withCredentials: true}).catch(err => console.log(err));
+        validatingRecipeWasShared(recipeId);
+    }
 
     useEffect(() => {
         axios.get(
             'http://localhost:8000/api/grabSpecifiedRecipe/' + recipeId,
             {withCredentials: true})
             .then(response => {
-                console.log(response.data.recipe);
                 setRecipe(response.data.recipe);
                 setLoaded(true);
             })
@@ -54,6 +77,9 @@ const ViewRecipe = () => {
                         deleteRecipe={deleteRecipe}
                         navigateToUpdateRecipe={navigateToUpdateRecipe}
                         recipeId={recipeId}
+                        isRecipeASharedRecipe={isRecipeASharedRecipe}
+                        shareRecipe={shareRecipe}
+                        unshareRecipe={unshareRecipe}
                     />
                 </>
             }       

@@ -65,7 +65,7 @@ module.exports = {
         const activeUserToken = JsonWebToken.decode(request.cookies.userToken);
         
         const willTheUserUpdate = await User.findOneAndUpdate({_id: activeUserToken.userId}, request.body, {new: true, runValidators: true}).catch(err => response.status(400).json(err));
-
+    
         response
             .status(200)
             .json({user: willTheUserUpdate});
