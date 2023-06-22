@@ -17,9 +17,9 @@ const LoginForm = ({mainStyle, formStyle, inputStyle, buttonSytle}) => {
         axios.post('http://localhost:8000/api/loginUser', {email, password}, {withCredentials: true})
             .then(res => navigate('/cookbook'))
             .catch(err => {
-                setEmailError(err.response.data.email !== undefined ? <span style={{color: 'red'}}>{err.response.data.email}</span> : null);
-                setPasswordError(err.response.data.password !== undefined ? <span style={{color: 'red'}}>{err.response.data.password}</span> : null);
-
+                console.log(err)
+                setEmailError(err.response.data.email !== undefined ? <span style={{color: 'red'}}>{err.response.data.email.message}</span> : null);
+                setPasswordError(err.response.data.password !== undefined ? <span style={{color: 'red'}}>{err.response.data.password.message}</span> : null);
             });
     }
 

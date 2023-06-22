@@ -22,8 +22,10 @@ module.exports = {
 
         for (let sharedRecipeIndex = 0; sharedRecipeIndex < grabbingAllSharedRecipes.length; sharedRecipeIndex++) {
             const recipe =  grabbingAllSharedRecipes[sharedRecipeIndex].recipeId;
-            const recipeInformation = await Recipe.findById({_id: recipe});
-            const recipePackage = {name: recipeInformation.name};
+
+            const recipeInformation = await Recipe.find({_id: recipe});
+
+            const recipePackage = {name: recipeInformation[0].name};
 
             const user = grabbingAllSharedRecipes[sharedRecipeIndex].userId;
             const userInformation = await User.findById({_id: user});
