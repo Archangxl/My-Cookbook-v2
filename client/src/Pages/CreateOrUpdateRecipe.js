@@ -3,9 +3,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from 'axios';
 import LoggedInNavbar from "../Components/NavsAndHeaders/LoggedInNavbar";
 import CreateRecipeForm from "../Components/Mains/CreateUpdateRecipeForm";
-import
+import usePostRecipe from '../Tools/useTest';
 
 const CreateOrUpdateRecipe = ({formType}) => {
+
+    const {data, error, setUrlForPost, setRecipeObject} = usePostRecipe();
 
     const [recipeName, setRecipeName] = useState("");
     const [ingredients, setIngredients] = useState([{measurement: '', item: ''}]);
@@ -20,8 +22,7 @@ const CreateOrUpdateRecipe = ({formType}) => {
     const handleIngredientAddition = useCallback((e) => {
         e.preventDefault();
         setIngredients(ingredients => [...ingredients, {measurement: '', item: ''}]);
-        // eslint-disable-next-line 
-    }, [ingredients]);
+    },[]);
 
     const handleIngredientSubtraction = useCallback((e) => {
         e.preventDefault();
@@ -33,8 +34,8 @@ const CreateOrUpdateRecipe = ({formType}) => {
     const handleInstructionAddition = useCallback((e) => {
         e.preventDefault();
         setInstructions(instructions => [...instructions, {description: ''}]);
-        // eslint-disable-next-line 
-    }, [instructions]);
+        
+    },[]);
 
     const handleInstructionSubstraction = useCallback((e) => {
         e.preventDefault();
@@ -85,25 +86,32 @@ const CreateOrUpdateRecipe = ({formType}) => {
         setRecipeNameError(error === undefined ? null : <span style={{color: 'red'}}>{error.message}</span>);
     }
 
-    const handleCreateRecipeSubmit = async (e) => {
+    const handleCreateRecipeSubmit = (e) => {
         e.preventDefault(); 
+        setRecipeObject({recipeName: recipeName, ingredientList: ingredients, stepList: instructions});
+        setUrlForPost('http://localhost:8000/api/createRecipe');
 
+        /*
         try {
-            await axios.post(
-                'http://localhost:8000/api/createRecipe', 
-                {recipeName: recipeName, ingredientList: ingredients, stepList: instructions},
-                {withCredentials: true}
-            );
+            setPostInfo(setRecipeObject);
+            /*
+            await axios.post('http://localhost:8000/api/createRecipe', 
+            {recipeName: recipeName, ingredientList: ingredients, stepList: instructions},
+                {withCredentials: true})
             navigate('/cookbook')
+            
         }
+        
 
         catch(error) {
+
             checkForIngredientErrors();
 
             checkForInstructionErrors();
 
             handleSetRecipeNameError(error.response.data.errors.name);
         }
+        */
     }
 
     const {recipeId} = useParams();
@@ -131,8 +139,7 @@ const CreateOrUpdateRecipe = ({formType}) => {
 
     useEffect(() => {
         doesFormTypeEqualUpdate();
-        // eslint-disable-next-line
-    }, [])
+    })
 
     const handleUpdateRecipeSubmit = async (e) => {
         e.preventDefault();
@@ -157,6 +164,7 @@ const CreateOrUpdateRecipe = ({formType}) => {
 
     return(
         <>
+        {console.log({data: data, error: error})}
             {
                 formType === "Login" &&
                 <>

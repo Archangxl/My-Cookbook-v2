@@ -13,7 +13,6 @@ const CreateUpdateRecipeForm = ({
         ingredientError,
         instructionError
     }) => {
-
         
     const mainStyle = {
         display: 'flex',
