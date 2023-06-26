@@ -1,10 +1,12 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useParams } from "react-router-dom";
 import LoggedInNavbar from "../Components/NavsAndHeaders/LoggedInNavbar";
 import CreateRecipeForm from "../Components/Mains/CreateUpdateRecipeForm";
 import usePostRecipe from '../Tools/useTest';
 
 const CreateOrUpdateRecipe = ({formType}) => {
+
+    const [loaded, setLoaded] = useState(true);
 
     const {
         setUrlForPost, 
@@ -16,10 +18,12 @@ const CreateOrUpdateRecipe = ({formType}) => {
 
     const handleIngredientAddition = (e) => {
         e.preventDefault();
-        setRecipeObject(object => {
-            return object.ingredientList.push({measurement: '', item: ''});
-        })
-        
+        setLoaded(false);
+        let r = recipeObject;
+        r.ingredientList[r.ingredientList.length] = {measurement: '', item: ''};
+        console.log(r);
+        setRecipeObject(r);
+        setLoaded(true);
         //ingredientAdditionList.push({measurement: '', item: ''});
     };
 
@@ -107,7 +111,7 @@ const CreateOrUpdateRecipe = ({formType}) => {
     return(
         <>
             {
-                formType === "Login" &&
+                loaded && formType === "Login" &&
                 <>
                     <LoggedInNavbar 
                         headerName="Add Recipe to Cookbook"  
