@@ -1,121 +1,63 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import { useNavigate, useParams } from "react-router-dom";
-import axios from 'axios';
+import React, { useCallback } from 'react';
+import { useParams } from "react-router-dom";
 import LoggedInNavbar from "../Components/NavsAndHeaders/LoggedInNavbar";
 import CreateRecipeForm from "../Components/Mains/CreateUpdateRecipeForm";
 import usePostRecipe from '../Tools/useTest';
 
 const CreateOrUpdateRecipe = ({formType}) => {
 
-    const {data, error, setUrlForPost, setRecipeObject} = usePostRecipe();
+    const {
+        setUrlForPost, 
+        recipeObject, setRecipeObject,
+        errorObject,
+    } = usePostRecipe();
 
-    const [recipeName, setRecipeName] = useState("");
-    const [ingredients, setIngredients] = useState([{measurement: '', item: ''}]);
-    const [instructions, setInstructions] = useState([{description: ''}]);
-    
-    const [recipeNameError, setRecipeNameError] = useState(null);
-    const [ingredientError, setIngredientError] = useState(null);
-    const [instructionError, setInstructionError] = useState(null);
+    //const navigate = useNavigate();
 
-    const navigate = useNavigate();
-
-    const handleIngredientAddition = useCallback((e) => {
+    const handleIngredientAddition = (e) => {
         e.preventDefault();
-        setIngredients(ingredients => [...ingredients, {measurement: '', item: ''}]);
-    },[]);
+        setRecipeObject(object => {
+            return object.ingredientList.push({measurement: '', item: ''});
+        })
+        
+        //ingredientAdditionList.push({measurement: '', item: ''});
+    };
 
     const handleIngredientSubtraction = useCallback((e) => {
         e.preventDefault();
-        let copyOfIngredientsArray = [...ingredients];
-        copyOfIngredientsArray.pop();
-        setIngredients(copyOfIngredientsArray)
-    }, [ingredients]);
+
+        let copyOfRecipeObject = recipeObject;
+        copyOfRecipeObject.ingredientList.pop();
+        setRecipeObject(copyOfRecipeObject)
+        
+    }, [recipeObject.ingredientList]);
 
     const handleInstructionAddition = useCallback((e) => {
         e.preventDefault();
-        setInstructions(instructions => [...instructions, {description: ''}]);
+
+        let copyOfRecipeObject = recipeObject;
+        copyOfRecipeObject.stepList.push({description: ''});
+        setRecipeObject(copyOfRecipeObject);
         
     },[]);
 
     const handleInstructionSubstraction = useCallback((e) => {
         e.preventDefault();
-        let copyOfInstructionArray = [...instructions];
-        copyOfInstructionArray.pop();
-        setInstructions(copyOfInstructionArray);
-    }, [instructions]);
 
-    const checkForInstructionErrors = () => {
-        let errorTicker = false;
-        instructions.forEach((instruction) => {
-            if (instruction.description === '') {
-                errorTicker = true;
-                setInstructionError(<span style={{color: 'red'}}>Please delete any empty fields</span>);
-            } else {
-                if (!errorTicker === true) {
-                    setInstructionError(null);
-                }
-            }
-        })
-    }
+        let copyOfRecipeObject = recipeObject;
+        copyOfRecipeObject.stepList.pop();
+        setRecipeObject(copyOfRecipeObject);
 
-    const checkForIngredientErrors = () => {
-        let errorTicker = false;
-        ingredients.forEach((ingredient) => {
+    }, [recipeObject.stepList]);
 
-            if (ingredient.item === '') {
-                errorTicker = true;
-                setIngredientError(<span style={{color: 'red'}}>Please delete any empty fields</span>);
-            } else {
-                if (!errorTicker === true) {
-                    setIngredientError(null);
-                }
-            }
-
-            if (ingredient.measurement === '') {
-                errorTicker = true;
-                setIngredientError(<span style={{color: 'red'}}>Please delete any empty fields</span>);
-            } else {
-                if (!errorTicker === true) {
-                    setIngredientError(null);
-                }
-            }
-        })
-    }
-
-    const handleSetRecipeNameError = (error) => {
-        setRecipeNameError(error === undefined ? null : <span style={{color: 'red'}}>{error.message}</span>);
-    }
 
     const handleCreateRecipeSubmit = (e) => {
         e.preventDefault(); 
-        setRecipeObject({recipeName: recipeName, ingredientList: ingredients, stepList: instructions});
         setUrlForPost('http://localhost:8000/api/createRecipe');
-
-        /*
-        try {
-            setPostInfo(setRecipeObject);
-            /*
-            await axios.post('http://localhost:8000/api/createRecipe', 
-            {recipeName: recipeName, ingredientList: ingredients, stepList: instructions},
-                {withCredentials: true})
-            navigate('/cookbook')
-            
-        }
-        
-
-        catch(error) {
-
-            checkForIngredientErrors();
-
-            checkForInstructionErrors();
-
-            handleSetRecipeNameError(error.response.data.errors.name);
-        }
-        */
     }
 
     const {recipeId} = useParams();
-
+/*
     const ifFormTypeIsUpdateThenUpdateRecipeNameIngredientsAndInstructions = async () => {
         try {
             const recipe = await axios.get(
@@ -161,10 +103,9 @@ const CreateOrUpdateRecipe = ({formType}) => {
             handleSetRecipeNameError(error.response.data.errors.name);
         }
     }
-
+*/
     return(
         <>
-        {console.log({data: data, error: error})}
             {
                 formType === "Login" &&
                 <>
@@ -173,17 +114,14 @@ const CreateOrUpdateRecipe = ({formType}) => {
                         navType="Recipe Create/Update/View"
                     />
                     <CreateRecipeForm 
-                        recipeName={recipeName} setRecipeName={setRecipeName}
-                        ingredients={ingredients} setIngredients={setIngredients}
-                        instructions={instructions} setInstructions={setInstructions}
                         handleIngredientAddition={handleIngredientAddition}
                         handleIngredientSubtraction={handleIngredientSubtraction}
                         handleInstructionAddition={handleInstructionAddition}
                         handleInstructionSubstraction={handleInstructionSubstraction}
                         handleSubmit={handleCreateRecipeSubmit}
-                        recipeNameError={recipeNameError} 
-                        ingredientError={ingredientError}
-                        instructionError={instructionError}
+                        recipeObject={recipeObject}
+                        setRecipeObject={setRecipeObject}
+                        errorObject={errorObject}
                     />
                 </>
             }
@@ -196,17 +134,12 @@ const CreateOrUpdateRecipe = ({formType}) => {
                         navType="Recipe Create/Update/View"
                     />
                     <CreateRecipeForm 
-                        recipeName={recipeName} setRecipeName={setRecipeName}
-                        ingredients={ingredients} setIngredients={setIngredients}
-                        instructions={instructions} setInstructions={setInstructions}
+                        recipeObject={recipeObject} setRecipeObject={setRecipeObject}
                         handleIngredientAddition={handleIngredientAddition}
                         handleIngredientSubtraction={handleIngredientSubtraction}
                         handleInstructionAddition={handleInstructionAddition}
                         handleInstructionSubstraction={handleInstructionSubstraction}
-                        handleSubmit={handleUpdateRecipeSubmit}
-                        recipeNameError={recipeNameError} 
-                        ingredientError={ingredientError}
-                        instructionError={instructionError}
+                        errorObject={errorObject}
                     />
                 </>
             }

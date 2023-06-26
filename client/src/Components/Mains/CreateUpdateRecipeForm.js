@@ -5,15 +5,11 @@ const CreateUpdateRecipeForm = ({
         handleIngredientSubtraction,
         handleInstructionAddition,
         handleInstructionSubstraction,
-        recipeName, setRecipeName,
-        ingredients, setIngredients,
-        instructions, setInstructions,
+        recipeObject, setRecipeObject,
         handleSubmit,
-        recipeNameError,
-        ingredientError,
-        instructionError
+        errorObject
     }) => {
-        
+        console.log(recipeObject);
     const mainStyle = {
         display: 'flex',
         justifyContent: 'center',
@@ -78,10 +74,15 @@ const CreateUpdateRecipeForm = ({
             <main style={mainStyle}>
 
                 <form style={formStyle} onSubmit={handleSubmit}>
-                    <label htmlFor="recipeName">Recipe Name: {recipeNameError}</label>
-                    <input id="recipeName" style={inputStyle} onChange={(e) => {setRecipeName(e.target.value)}} value={recipeName}></input>
+                    <label htmlFor="recipeName">Recipe Name: {errorObject.recipeNameError}</label>
+                    <input id="recipeName" style={inputStyle} onChange={(e) => {
+                        let copyOfRecipeObject = recipeObject;
+                        copyOfRecipeObject.recipeName = e.target.value;
+                        setRecipeObject(copyOfRecipeObject);
+                    }} value={recipeObject.recipeName}
+                    ></input>
 
-                    <p>Ingredients: {ingredientError}</p>
+                    <p>Ingredients: {errorObject.ingredientError}</p>
                     <div style={{display: 'flex'}}>
                         <label style={labelStyleForMeasurements} htmlFor='measurement'>Measurement: </label>
                         <label style={labelStyleForItems} htmlFor='item'>Item: </label>
@@ -89,33 +90,31 @@ const CreateUpdateRecipeForm = ({
 
                     {
                         
-                        ingredients.map((ingredient, index) => {
+                        recipeObject.ingredientList.map((ingredient, index) => {
+
                             return ( 
                                 <div key={index}>
 
                                     <div style={{display: 'flex'}}>
 
                                             <input id='measurement' style={measurementInputStyle} onChange={(e) => {
-                                            
-                                                let copyOfIngredientsArraySoMeasurementCanBeUpdated = [...ingredients];
-                                                copyOfIngredientsArraySoMeasurementCanBeUpdated[index].measurement = e.target.value;
-                                                setIngredients(copyOfIngredientsArraySoMeasurementCanBeUpdated);;
-                                            
-                                            }} value={ingredients[index].measurement}></input>
+                                                let copyOfRecipeObject = recipeObject;
+                                                copyOfRecipeObject.ingredientList[index].measurement = e.target.value;
+                                                setRecipeObject(copyOfRecipeObject);
+                                            }} value={ingredient.measurement}></input>
 
                                             <input id='item' style={itemInputStyle} onChange={(e) => {
-
-                                                let copyOfIngredientsArraySoItemCanBeUpdated = [...ingredients];
-                                                copyOfIngredientsArraySoItemCanBeUpdated[index].item = e.target.value;
-                                                setIngredients(copyOfIngredientsArraySoItemCanBeUpdated);
-                                            
-                                            }} value={ingredients[index].item}></input>
+                                                let copyOfRecipeObject = recipeObject;
+                                                copyOfRecipeObject.ingredientList[index].item = e.target.value;
+                                                setRecipeObject(copyOfRecipeObject);
+                                            }} value={ingredient.item}></input>
 
                                     </div>
 
                                 </div>
                             );
                         })
+                        
                     }
 
                     <div>
@@ -123,17 +122,16 @@ const CreateUpdateRecipeForm = ({
                         <button onClick={handleIngredientSubtraction} style={buttonSytle}>Remove Ingredient</button>
                     </div>
 
-                    <label htmlFor="instructions">Instructions {instructionError}</label>
+                    <label htmlFor="instructions">Instructions {recipeObject.instructionError}</label>
                     {
                         
-                        instructions.map((instruction, index) => {
+                        recipeObject.stepList.map((instruction, index) => {
                             return (
-
                                 <input id="instructions" key={index + 50} style={inputStyle} onChange={(e) => {
-                                    let copyOfInstructionArraySoDescriptionCanBeUpdated = [...instructions];
-                                    copyOfInstructionArraySoDescriptionCanBeUpdated[index].description = e.target.value;
-                                    setInstructions(copyOfInstructionArraySoDescriptionCanBeUpdated);
-                                }} value={instructions[index].description}></input>
+                                    let copyOfRecipeObject = recipeObject;
+                                    copyOfRecipeObject.stepList[index].description = e.target.value;
+                                    setRecipeObject(copyOfRecipeObject);
+                                }} value={recipeObject.stepList[index].description}></input>
 
                             );
                         })
