@@ -7,8 +7,8 @@ const usePostRecipe = () => {
 
     const [recipeObject, setRecipeObject] = useState({
         recipeName: "", 
-        ingredientList: [{id: 0, measurement: '', item: ''}], 
-        stepList: [{id: 0, description: ''}]
+        ingredientList: [{_id: 0, measurement: '', item: ''}], 
+        stepList: [{_id: 0, description: ''}]
     });
     
     const [errorObject, setErrorObject] = useState({
@@ -17,65 +17,34 @@ const usePostRecipe = () => {
         instructionError: null
     })
 
-    //Checks for recipe name errors
-    const checkForRecipeNameErrors = (error) => {
-        let copyOfErrorObject = errorObject;
-        copyOfErrorObject.recipeNameError = (error === undefined ? null : <span style={{color: 'red'}}>{error.message}</span>);
-        setErrorObject(copyOfErrorObject);
-    }
-
     //Checks for ingredient Errors
-    const checkForIngredientErrors = (recipeObject) => {
-        let errorTicker = false;
-        recipeObject.ingredientList.forEach((ingredient) => {
-
-            if (ingredient.item === '') {
-                errorTicker = true;
-
-                let copyOfErrorObject = errorObject;
-                copyOfErrorObject.ingredientError = <span style={{color: 'red'}}>Please delete any empty fields</span>;
-                setErrorObject(copyOfErrorObject);
-            } else {
-                if (!errorTicker === true) {
-
-                    let copyOfErrorObject = errorObject;
-                    copyOfErrorObject.ingredientError = null;
-                    setErrorObject(copyOfErrorObject);
-                }
-            }
-
-            if (ingredient.measurement === '') {
-                errorTicker = true;
-
-                let copyOfErrorObject = errorObject;
-                copyOfErrorObject.ingredientError = <span style={{color: 'red'}}>Please delete any empty fields</span>;
-                setErrorObject(copyOfErrorObject);
-
-            } else {
-                if (!errorTicker === true) {
-                    let copyOfErrorObject = errorObject;
-                    copyOfErrorObject.ingredientError = null;
-                    setErrorObject(copyOfErrorObject);
-                }
-            }
-        })
-    }
-
-    //checks for instruction Errors
-    const checkForInstructionErrors = (recipeObject) => {
-        let errorTicker = false;
-        recipeObject.stepList.forEach((instruction) => {
-            if (instruction.description === '') {
-                errorTicker = true;
-                let copyOfErrorObject = errorObject;
-                    copyOfErrorObject.instructionError = <span style={{color: 'red'}}>Please delete any empty fields</span>;
-            } else {
-                if (!errorTicker === true) {
-                    let copyOfErrorObject = errorObject;
-                    copyOfErrorObject.instructionError = null;
-                    setErrorObject(copyOfErrorObject);
-                }
-            }
+    const checkForErrors = (recipeObject, error) => {
+        setErrorObject(() => {
+            let errorTickerForIngredients = false;
+            let errorTickerForInstructions = false;
+            return ({
+                recipeNameError: (error === undefined ? null :  <span style={{color: 'red'}}>{error.message}</span>),
+                ingredientError: (recipeObject.ingredientList.map((ingredient) => {
+                    if (ingredient.measurement === '' || ingredient.item === '' ) {
+                        errorTickerForIngredients = true;
+                        return <span key={ingredient._id} style={{color: 'red'}}>Please delete any empty fields</span>;
+                    } else {
+                        if (errorTickerForIngredients !== true) {
+                            return null;
+                        }
+                    }
+                })),
+                instructionError: (recipeObject.stepList.map((instuction) => {
+                    if (instuction.description === '') {
+                        errorTickerForInstructions = true;
+                        return <span key={instuction._id} style={{color: 'red'}}>Please delete any empty fields</span>;
+                    } else {
+                        if (errorTickerForInstructions !== true) {
+                            return null;
+                        }
+                    }
+                }))
+            })
         })
     }
 
@@ -89,9 +58,8 @@ const usePostRecipe = () => {
             )
                 .then(res => console.log(res))
                 .catch(err => {
-                    checkForInstructionErrors(recipeObject);
-                    checkForIngredientErrors(recipeObject);
-                    checkForRecipeNameErrors(err.response.data.errors.name);
+                    checkForErrors(recipeObject, err.response.data.errors.name);
+                    setUrlForPost(null);
                 });
         }
         // eslint-disable-next-line

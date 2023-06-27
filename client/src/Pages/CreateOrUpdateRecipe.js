@@ -8,7 +8,7 @@ const CreateOrUpdateRecipe = ({formType}) => {
     const {
         setUrlForPost, 
         recipeObject, setRecipeObject,
-        errorObject,
+        errorObject
     } = usePostRecipe();
 
     //const navigate = useNavigate();
@@ -19,7 +19,7 @@ const CreateOrUpdateRecipe = ({formType}) => {
             let ingredientListLength = prevState.ingredientList.length
             return ({
                 stepList: [...prevState.stepList],
-                ingredientList: [...prevState.ingredientList, {id: ingredientListLength, measurement: '', item: ''}],
+                ingredientList: [...prevState.ingredientList, {_id: ingredientListLength, measurement: '', item: ''}],
                 recipeName: prevState.recipeName,
             });
         });
@@ -33,7 +33,7 @@ const CreateOrUpdateRecipe = ({formType}) => {
             
             return ({
                 stepList: [...prevState.stepList],
-                ingredientList: [...prevState.ingredientList].filter((element) =>  element.id !== removingIndex),
+                ingredientList: [...prevState.ingredientList].filter((ingredient) =>  ingredient._id !== removingIndex),
                 recipeName: prevState.recipeName,
             });
             
@@ -47,7 +47,7 @@ const CreateOrUpdateRecipe = ({formType}) => {
             let ingredientListLength = prevState.stepList.length;
 
             return ({
-                stepList: [...prevState.stepList, {id: ingredientListLength, description: ''}],
+                stepList: [...prevState.stepList, {_id: ingredientListLength, description: ''}],
                 ingredientList: [...prevState.ingredientList],
                 recipeName: prevState.recipeName,
             });
@@ -62,7 +62,7 @@ const CreateOrUpdateRecipe = ({formType}) => {
             let removingIndex = prevState.stepList.length - 1
             
             return ({
-                stepList: [...prevState.stepList].filter((element) =>  element.id !== removingIndex),
+                stepList: [...prevState.stepList].filter((instruction) =>  instruction._id !== removingIndex),
                 ingredientList: [...prevState.ingredientList],
                 recipeName: prevState.recipeName,
             });
@@ -93,9 +93,9 @@ const CreateOrUpdateRecipe = ({formType}) => {
                 stepList: [...prevState.stepList],
                 ingredientList: [...prevState.ingredientList].map(ingredient => {
                     return (
-                    ingredient.id === ingredientObject.id 
+                    ingredient._id === ingredientObject._id 
                         ? 
-                            {id: ingredient.id, measurement: e.target.value, item: ingredient.item} 
+                            {_id: ingredient._id, measurement: e.target.value, item: ingredient.item} 
                         : 
                             ingredient
                     )
@@ -111,9 +111,9 @@ const CreateOrUpdateRecipe = ({formType}) => {
                 stepList: [...prevState.stepList],
                 ingredientList: [...prevState.ingredientList].map(ingredient => {
                     return (
-                    ingredient.id === ingredientObject.id 
+                    ingredient._id === ingredientObject._id 
                         ? 
-                            {id: ingredient.id, measurement: ingredient.measurement, item: e.target.value} 
+                            {_id: ingredient._id, measurement: ingredient.measurement, item: e.target.value} 
                         : 
                             ingredient
                     )
@@ -130,9 +130,9 @@ const CreateOrUpdateRecipe = ({formType}) => {
                 ingredientList: [...prevState.ingredientList],
                 stepList: [...prevState.stepList].map(instruction => {
                     return (
-                        instruction.id === instructionObject.id 
+                        instruction._id === instructionObject._id 
                             ?
-                                {id: instruction.id, description: e.target.value}
+                                {_id: instruction._id, description: e.target.value}
                             :
                                 instruction
                     )

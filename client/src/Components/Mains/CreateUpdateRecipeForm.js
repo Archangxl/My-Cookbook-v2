@@ -14,6 +14,7 @@ const CreateUpdateRecipeForm = ({
         errorObject
     }) => {
         console.log(recipeObject);
+        console.log(errorObject);
     const mainStyle = {
         display: 'flex',
         justifyContent: 'center',
@@ -114,7 +115,7 @@ const CreateUpdateRecipeForm = ({
                         <button onClick={handleIngredientSubtraction} style={buttonSytle}>Remove Ingredient</button>
                     </div>
 
-                    <label htmlFor="instructions">Instructions {recipeObject.instructionError}</label>
+                    <label htmlFor="instructions">Instructions {errorObject.instructionError}</label>
                     {
                         
                         recipeObject.stepList.map((instruction, index) => {
