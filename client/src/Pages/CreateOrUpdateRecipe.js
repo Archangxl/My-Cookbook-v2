@@ -1,12 +1,9 @@
-import React, { useCallback, useState } from 'react';
-import { useParams } from "react-router-dom";
+//import { useParams } from "react-router-dom";
 import LoggedInNavbar from "../Components/NavsAndHeaders/LoggedInNavbar";
 import CreateRecipeForm from "../Components/Mains/CreateUpdateRecipeForm";
 import usePostRecipe from '../Tools/useTest';
 
 const CreateOrUpdateRecipe = ({formType}) => {
-
-    const [loaded, setLoaded] = useState(true);
 
     const {
         setUrlForPost, 
@@ -18,41 +15,61 @@ const CreateOrUpdateRecipe = ({formType}) => {
 
     const handleIngredientAddition = (e) => {
         e.preventDefault();
-        setLoaded(false);
-        let r = recipeObject;
-        r.ingredientList[r.ingredientList.length] = {measurement: '', item: ''};
-        console.log(r);
-        setRecipeObject(r);
-        setLoaded(true);
-        //ingredientAdditionList.push({measurement: '', item: ''});
+        setRecipeObject(prevState => {
+            let ingredientListLength = prevState.ingredientList.length
+            return ({
+                stepList: [...prevState.stepList],
+                ingredientList: [...prevState.ingredientList, {id: ingredientListLength, measurement: '', item: ''}],
+                recipeName: prevState.recipeName,
+            });
+        });
     };
 
-    const handleIngredientSubtraction = useCallback((e) => {
+    const handleIngredientSubtraction = (e) => {
         e.preventDefault();
 
-        let copyOfRecipeObject = recipeObject;
-        copyOfRecipeObject.ingredientList.pop();
-        setRecipeObject(copyOfRecipeObject)
+        setRecipeObject(prevState => {
+            let removingIndex = prevState.ingredientList.length - 1
+            
+            return ({
+                stepList: [...prevState.stepList],
+                ingredientList: [...prevState.ingredientList].filter((element) =>  element.id !== removingIndex),
+                recipeName: prevState.recipeName,
+            });
+            
+        });   
+    };
+
+    const handleInstructionAddition = (e) => {
+        e.preventDefault();
         
-    }, [recipeObject.ingredientList]);
+        setRecipeObject(prevState => {
+            let ingredientListLength = prevState.stepList.length;
 
-    const handleInstructionAddition = useCallback((e) => {
-        e.preventDefault();
-
-        let copyOfRecipeObject = recipeObject;
-        copyOfRecipeObject.stepList.push({description: ''});
-        setRecipeObject(copyOfRecipeObject);
+            return ({
+                stepList: [...prevState.stepList, {id: ingredientListLength, description: ''}],
+                ingredientList: [...prevState.ingredientList],
+                recipeName: prevState.recipeName,
+            });
+        })
         
-    },[]);
+    };
 
-    const handleInstructionSubstraction = useCallback((e) => {
+    const handleInstructionSubstraction = (e) => {
         e.preventDefault();
 
-        let copyOfRecipeObject = recipeObject;
-        copyOfRecipeObject.stepList.pop();
-        setRecipeObject(copyOfRecipeObject);
+        setRecipeObject(prevState => {
+            let removingIndex = prevState.stepList.length - 1
+            
+            return ({
+                stepList: [...prevState.stepList].filter((element) =>  element.id !== removingIndex),
+                ingredientList: [...prevState.ingredientList],
+                recipeName: prevState.recipeName,
+            });
+            
+        });  
 
-    }, [recipeObject.stepList]);
+    };
 
 
     const handleCreateRecipeSubmit = (e) => {
@@ -60,7 +77,71 @@ const CreateOrUpdateRecipe = ({formType}) => {
         setUrlForPost('http://localhost:8000/api/createRecipe');
     }
 
-    const {recipeId} = useParams();
+    const handleRecipeNameChange = (e) => {
+        setRecipeObject(prevState => {
+            return ({
+                stepList: [...prevState.stepList],
+                ingredientList: [...prevState.ingredientList],
+                recipeName: e.target.value
+            })
+        })
+    }
+
+    const handleIngredientMeasurementChange = (e, ingredientObject) => {
+        setRecipeObject(prevState => {
+            return ({
+                stepList: [...prevState.stepList],
+                ingredientList: [...prevState.ingredientList].map(ingredient => {
+                    return (
+                    ingredient.id === ingredientObject.id 
+                        ? 
+                            {id: ingredient.id, measurement: e.target.value, item: ingredient.item} 
+                        : 
+                            ingredient
+                    )
+                }),
+                recipeName: prevState.recipeName
+            })
+        })
+    }
+
+    const handleIngredientItemChange = (e, ingredientObject) => {
+        setRecipeObject(prevState => {
+            return ({
+                stepList: [...prevState.stepList],
+                ingredientList: [...prevState.ingredientList].map(ingredient => {
+                    return (
+                    ingredient.id === ingredientObject.id 
+                        ? 
+                            {id: ingredient.id, measurement: ingredient.measurement, item: e.target.value} 
+                        : 
+                            ingredient
+                    )
+                }),
+                recipeName: prevState.recipeName
+            })
+        })
+    }
+
+    const handleInstructionDescriptionChange = (e, instructionObject) => {
+        setRecipeObject(prevState => {
+            return({
+                recipeName: prevState.recipeName,
+                ingredientList: [...prevState.ingredientList],
+                stepList: [...prevState.stepList].map(instruction => {
+                    return (
+                        instruction.id === instructionObject.id 
+                            ?
+                                {id: instruction.id, description: e.target.value}
+                            :
+                                instruction
+                    )
+                })
+            })
+        })
+    }
+
+    //const {recipeId} = useParams();
 /*
     const ifFormTypeIsUpdateThenUpdateRecipeNameIngredientsAndInstructions = async () => {
         try {
@@ -111,7 +192,7 @@ const CreateOrUpdateRecipe = ({formType}) => {
     return(
         <>
             {
-                loaded && formType === "Login" &&
+                formType === "Login" &&
                 <>
                     <LoggedInNavbar 
                         headerName="Add Recipe to Cookbook"  
@@ -123,6 +204,10 @@ const CreateOrUpdateRecipe = ({formType}) => {
                         handleInstructionAddition={handleInstructionAddition}
                         handleInstructionSubstraction={handleInstructionSubstraction}
                         handleSubmit={handleCreateRecipeSubmit}
+                        handleRecipeNameChange={handleRecipeNameChange}
+                        handleIngredientMeasurementChange={handleIngredientMeasurementChange}
+                        handleIngredientItemChange={handleIngredientItemChange}
+                        handleInstructionDescriptionChange={handleInstructionDescriptionChange}
                         recipeObject={recipeObject}
                         setRecipeObject={setRecipeObject}
                         errorObject={errorObject}

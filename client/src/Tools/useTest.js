@@ -7,8 +7,8 @@ const usePostRecipe = () => {
 
     const [recipeObject, setRecipeObject] = useState({
         recipeName: "", 
-        ingredientList: [{measurement: '', item: ''}], 
-        stepList: [{description: ''}]
+        ingredientList: [{id: 0, measurement: '', item: ''}], 
+        stepList: [{id: 0, description: ''}]
     });
     
     const [errorObject, setErrorObject] = useState({
@@ -82,20 +82,19 @@ const usePostRecipe = () => {
 
     //axios call
     useEffect(() => {
-        if (urlForPost === null) {
-
-        } else {
+        if (urlForPost !== null) {
             axios.post(urlForPost, 
                 recipeObject,
                 {withCredentials: true}
             )
                 .then(res => console.log(res))
                 .catch(err => {
-                    checkForInstructionErrors(recipeObject)
+                    checkForInstructionErrors(recipeObject);
                     checkForIngredientErrors(recipeObject);
                     checkForRecipeNameErrors(err.response.data.errors.name);
                 });
         }
+        // eslint-disable-next-line
     }, [urlForPost])
 
     //spot where data is transferred 

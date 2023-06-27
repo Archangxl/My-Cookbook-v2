@@ -5,6 +5,10 @@ const CreateUpdateRecipeForm = ({
         handleIngredientSubtraction,
         handleInstructionAddition,
         handleInstructionSubstraction,
+        handleRecipeNameChange,
+        handleIngredientMeasurementChange,
+        handleIngredientItemChange,
+        handleInstructionDescriptionChange,
         recipeObject, setRecipeObject,
         handleSubmit,
         errorObject
@@ -75,11 +79,7 @@ const CreateUpdateRecipeForm = ({
 
                 <form style={formStyle} onSubmit={handleSubmit}>
                     <label htmlFor="recipeName">Recipe Name: {errorObject.recipeNameError}</label>
-                    <input id="recipeName" style={inputStyle} onChange={(e) => {
-                        let copyOfRecipeObject = recipeObject;
-                        copyOfRecipeObject.recipeName = e.target.value;
-                        setRecipeObject(copyOfRecipeObject);
-                    }} value={recipeObject.recipeName}
+                    <input id="recipeName" style={inputStyle} onChange={handleRecipeNameChange} value={recipeObject.recipeName}
                     ></input>
 
                     <p>Ingredients: {errorObject.ingredientError}</p>
@@ -97,17 +97,9 @@ const CreateUpdateRecipeForm = ({
 
                                     <div style={{display: 'flex'}}>
 
-                                            <input id='measurement' style={measurementInputStyle} onChange={(e) => {
-                                                let copyOfRecipeObject = recipeObject;
-                                                copyOfRecipeObject.ingredientList[index].measurement = e.target.value;
-                                                setRecipeObject(copyOfRecipeObject);
-                                            }} value={ingredient.measurement}></input>
+                                        <input id='measurement' style={measurementInputStyle} onChange={(e) => handleIngredientMeasurementChange(e,ingredient)} value={ingredient.measurement}></input>
 
-                                            <input id='item' style={itemInputStyle} onChange={(e) => {
-                                                let copyOfRecipeObject = recipeObject;
-                                                copyOfRecipeObject.ingredientList[index].item = e.target.value;
-                                                setRecipeObject(copyOfRecipeObject);
-                                            }} value={ingredient.item}></input>
+                                        <input id='item' style={itemInputStyle} onChange={(e) => {handleIngredientItemChange(e, ingredient)}} value={ingredient.item}></input>
 
                                     </div>
 
@@ -127,11 +119,7 @@ const CreateUpdateRecipeForm = ({
                         
                         recipeObject.stepList.map((instruction, index) => {
                             return (
-                                <input id="instructions" key={index + 50} style={inputStyle} onChange={(e) => {
-                                    let copyOfRecipeObject = recipeObject;
-                                    copyOfRecipeObject.stepList[index].description = e.target.value;
-                                    setRecipeObject(copyOfRecipeObject);
-                                }} value={recipeObject.stepList[index].description}></input>
+                                <input id="instructions" key={index + 50} style={inputStyle} onChange={(e) => {handleInstructionDescriptionChange(e, instruction)}} value={recipeObject.stepList[index].description}></input>
 
                             );
                         })
