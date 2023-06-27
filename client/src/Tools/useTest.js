@@ -17,13 +17,14 @@ const usePostRecipe = () => {
         instructionError: null
     })
 
-    //Checks for ingredient Errors
+    //Checks for Errors
     const checkForErrors = (recipeObject, error) => {
         setErrorObject(() => {
             let errorTickerForIngredients = false;
             let errorTickerForInstructions = false;
             return ({
                 recipeNameError: (error === undefined ? null :  <span style={{color: 'red'}}>{error.message}</span>),
+                // eslint-disable-next-line
                 ingredientError: (recipeObject.ingredientList.map((ingredient) => {
                     if (ingredient.measurement === '' || ingredient.item === '' ) {
                         errorTickerForIngredients = true;
@@ -34,6 +35,7 @@ const usePostRecipe = () => {
                         }
                     }
                 })),
+                // eslint-disable-next-line
                 instructionError: (recipeObject.stepList.map((instuction) => {
                     if (instuction.description === '') {
                         errorTickerForInstructions = true;
