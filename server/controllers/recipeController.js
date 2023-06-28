@@ -5,6 +5,7 @@ const JsonWebToken = require('jsonwebtoken');
 module.exports = {
 
     createRecipe: async (request, response) => {
+        
         const activeUserToken = JsonWebToken.decode(request.cookies.userToken);
 
         /*

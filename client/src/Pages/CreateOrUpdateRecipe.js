@@ -1,17 +1,19 @@
 //import { useParams } from "react-router-dom";
 import LoggedInNavbar from "../Components/NavsAndHeaders/LoggedInNavbar";
 import CreateRecipeForm from "../Components/Mains/CreateUpdateRecipeForm";
-import usePostRecipe from '../Tools/useTest';
+import useRecipe from '../Tools/useRecipe';
+import { useParams } from "react-router-dom";
+import { useEffect } from "react";
 
 const CreateOrUpdateRecipe = ({formType}) => {
 
     const {
-        setUrlForPost, 
+        setUrl, 
         recipeObject, setRecipeObject,
-        errorObject
-    } = usePostRecipe();
-
-    //const navigate = useNavigate();
+        errorObject,
+        setAxiosMethod,
+        setRecipeIdBeingUpdated
+    } = useRecipe();
 
     const handleIngredientAddition = (e) => {
         e.preventDefault();
@@ -70,12 +72,6 @@ const CreateOrUpdateRecipe = ({formType}) => {
         });  
 
     };
-
-
-    const handleCreateRecipeSubmit = (e) => {
-        e.preventDefault(); 
-        setUrlForPost('http://localhost:8000/api/createRecipe');
-    }
 
     const handleRecipeNameChange = (e) => {
         setRecipeObject(prevState => {
@@ -140,59 +136,30 @@ const CreateOrUpdateRecipe = ({formType}) => {
             })
         })
     }
+    const {recipeId} = useParams();
 
-    //const {recipeId} = useParams();
-/*
-    const ifFormTypeIsUpdateThenUpdateRecipeNameIngredientsAndInstructions = async () => {
-        try {
-            const recipe = await axios.get(
-                'http://localhost:8000/api/grabSpecifiedRecipe/' + recipeId,
-                {withCredentials: true}
-            )
-            setRecipeName(recipe.data.recipe.name);
-            setIngredients(recipe.data.recipe.ingredientList);
-            setInstructions(recipe.data.recipe.stepList)            
-        }
-        catch(error) {
-            console.log(error);
-        }
-    }
-
-    const doesFormTypeEqualUpdate = () => {
-        if (formType === 'Update') {
-            ifFormTypeIsUpdateThenUpdateRecipeNameIngredientsAndInstructions();
+    const handleSubmitMethod = (e) => {
+        e.preventDefault(); 
+        if (formType === 'Create') {
+            setUrl('http://localhost:8000/api/createRecipe');
+        } else if (formType === 'Update') {
+            setUrl('http://localhost:8000/api/updateRecipe/' + recipeId);
         }
     }
 
     useEffect(() => {
-        doesFormTypeEqualUpdate();
+        if (formType === 'Create') {
+            setAxiosMethod('Create');
+        } else if (formType === 'Update') {
+            setAxiosMethod('Update');
+            setRecipeIdBeingUpdated(recipeId);
+        }
     })
 
-    const handleUpdateRecipeSubmit = async (e) => {
-        e.preventDefault();
-
-        try {
-            await axios.put(
-                'http://localhost:8000/api/updateRecipe/' + recipeId, 
-                {recipeName: recipeName, ingredientList: ingredients, stepList: instructions},
-                {withCredentials: true}
-            )
-            navigate('/cookbook')
-        }
-        
-        catch(error) {
-            checkForIngredientErrors();
-
-            checkForInstructionErrors();
-
-            handleSetRecipeNameError(error.response.data.errors.name);
-        }
-    }
-*/
     return(
         <>
             {
-                formType === "Login" &&
+                formType === "Create" &&
                 <>
                     <LoggedInNavbar 
                         headerName="Add Recipe to Cookbook"  
@@ -203,13 +170,12 @@ const CreateOrUpdateRecipe = ({formType}) => {
                         handleIngredientSubtraction={handleIngredientSubtraction}
                         handleInstructionAddition={handleInstructionAddition}
                         handleInstructionSubstraction={handleInstructionSubstraction}
-                        handleSubmit={handleCreateRecipeSubmit}
+                        handleSubmit={handleSubmitMethod}
                         handleRecipeNameChange={handleRecipeNameChange}
                         handleIngredientMeasurementChange={handleIngredientMeasurementChange}
                         handleIngredientItemChange={handleIngredientItemChange}
                         handleInstructionDescriptionChange={handleInstructionDescriptionChange}
                         recipeObject={recipeObject}
-                        setRecipeObject={setRecipeObject}
                         errorObject={errorObject}
                     />
                 </>
@@ -223,11 +189,16 @@ const CreateOrUpdateRecipe = ({formType}) => {
                         navType="Recipe Create/Update/View"
                     />
                     <CreateRecipeForm 
-                        recipeObject={recipeObject} setRecipeObject={setRecipeObject}
                         handleIngredientAddition={handleIngredientAddition}
                         handleIngredientSubtraction={handleIngredientSubtraction}
                         handleInstructionAddition={handleInstructionAddition}
                         handleInstructionSubstraction={handleInstructionSubstraction}
+                        handleSubmit={handleSubmitMethod}
+                        handleRecipeNameChange={handleRecipeNameChange}
+                        handleIngredientMeasurementChange={handleIngredientMeasurementChange}
+                        handleIngredientItemChange={handleIngredientItemChange}
+                        handleInstructionDescriptionChange={handleInstructionDescriptionChange}
+                        recipeObject={recipeObject}
                         errorObject={errorObject}
                     />
                 </>

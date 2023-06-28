@@ -9,12 +9,12 @@ const CreateUpdateRecipeForm = ({
         handleIngredientMeasurementChange,
         handleIngredientItemChange,
         handleInstructionDescriptionChange,
-        recipeObject, setRecipeObject,
+        recipeObject,
         handleSubmit,
         errorObject
     }) => {
-        console.log(recipeObject);
-        console.log(errorObject);
+        //console.log(recipeObject);
+        //console.log(errorObject);
     const mainStyle = {
         display: 'flex',
         justifyContent: 'center',

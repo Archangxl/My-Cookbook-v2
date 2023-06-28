@@ -15,7 +15,7 @@ function App() {
           <Route path='/login' element={<LoginOrRegister formType="Login" />} />
           <Route path='/register' element={<LoginOrRegister formType="Register" />} />
           <Route path="/cookbook" element={<Cookbook />} />
-          <Route path="/recipe" element={<CreateOrUpdateRecipe formType="Login"/>} />
+          <Route path="/recipe" element={<CreateOrUpdateRecipe formType="Create"/>} />
           <Route path="/updateRecipe/:recipeId" element={<CreateOrUpdateRecipe formType="Update" />} />
           <Route path="/viewRecipe/:recipeId" element={<ViewRecipe />} />
         </Routes>

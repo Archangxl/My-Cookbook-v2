@@ -13,6 +13,11 @@ const RecipeSchema = new mongoose.Schema({
     },
 
     ingredientList: [{
+        _id: {
+            type: Number,
+            required: [true, 'Please provide an id']
+        },
+
         measurement: {
             type: String,
             required: [true, 'Please provide a measurement']
@@ -25,6 +30,11 @@ const RecipeSchema = new mongoose.Schema({
     }],
 
     stepList: [{
+        _id: {
+            type: Number,
+            required: [true, 'Please provide an id']
+        },
+
         description: {
             type: String,
             required: [true, 'Please provide your step description']

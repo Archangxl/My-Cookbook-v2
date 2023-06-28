@@ -1,9 +1,14 @@
+import { useNavigate } from 'react-router-dom';
 import {useState, useEffect} from 'react';
 import axios from 'axios';
 
-const usePostRecipe = () => {
+const useRecipe = () => {
 
-    const [urlForPost, setUrlForPost] = useState(null);
+    const navigate = useNavigate();
+
+    const [url, setUrl] = useState(null);
+    const [axiosMethod, setAxiosMethod] = useState(null);
+    const [recipeIdBeindUpdated, setRecipeIdBeingUpdated] = useState(null);
 
     const [recipeObject, setRecipeObject] = useState({
         recipeName: "", 
@@ -50,28 +55,63 @@ const usePostRecipe = () => {
         })
     }
 
+    // checks to see if the form is update or create so recipeObject can be updated
+    useEffect(() => {
+        if (axiosMethod === 'Update') {
+            axios.get('http://localhost:8000/api/grabSpecifiedRecipe/' + recipeIdBeindUpdated, {withCredentials: true})
+                .then(res => {
+                    setRecipeObject(() => {
+                        return ({
+                            recipeName: res.data.recipe.name, 
+                            ingredientList: res.data.recipe.ingredientList, 
+                            stepList: res.data.recipe.stepList
+                        })
+                    })
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+        }
+    }, [axiosMethod, recipeIdBeindUpdated])
+
 
     //axios call
     useEffect(() => {
-        if (urlForPost !== null) {
-            axios.post(urlForPost, 
+        if (url !== null) {
+            if (axiosMethod === "Create") {
+            axios.post(url, 
                 recipeObject,
                 {withCredentials: true}
             )
-                .then(res => console.log(res))
+                .then(res => navigate('/cookbook'))
                 .catch(err => {
+                    console.log(err);
                     checkForErrors(recipeObject, err.response.data.errors.name);
-                    setUrlForPost(null);
+                    setUrl(null);
                 });
+            } else if (axiosMethod === "Update") {
+                axios.put(url, 
+                    recipeObject,
+                    {withCredentials: true}
+                )
+                    .then(res => navigate('/cookbook'))
+                    .catch(err => {
+                        console.log(err);
+                        checkForErrors(recipeObject, err.response.data.errors.name);
+                        setUrl(null);
+                    });
+            }
         }
         // eslint-disable-next-line
-    }, [urlForPost])
+    }, [url])
 
     //spot where data is transferred 
     return {
-        setUrlForPost, 
+        setUrl, 
         recipeObject, setRecipeObject,
         errorObject, setErrorObject,
+        setAxiosMethod,
+        setRecipeIdBeingUpdated
     };
 }
-export default usePostRecipe;
+export default useRecipe;
