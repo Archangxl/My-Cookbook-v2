@@ -1,5 +1,8 @@
 import axios from 'axios'; 
 import {useNavigate, Link} from 'react-router-dom';
+import { useState } from 'react';
+import image from './dropDownImage.png'
+import image2 from './dropDownImageTwo.png'
 
 const LoggedInNavbar = ({headerName, navType}) => {
 
@@ -49,6 +52,8 @@ const LoggedInNavbar = ({headerName, navType}) => {
         fontSize: '16px',
         cursor: 'pointer'
     }
+
+    const [clickMe, setClickMe] = useState(true);
 
     return (
         <>

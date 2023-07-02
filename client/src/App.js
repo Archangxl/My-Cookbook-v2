@@ -4,6 +4,7 @@ import LoginOrRegister from "./Pages/LoginOrRegister";
 import Cookbook from "./Pages/Cookbook";
 import CreateOrUpdateRecipe from "./Pages/CreateOrUpdateRecipe";
 import ViewRecipe from './Pages/ViewRecipe';
+import "./style.css"
 
 function App() {
 
